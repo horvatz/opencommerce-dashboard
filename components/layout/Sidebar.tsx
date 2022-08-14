@@ -1,4 +1,10 @@
-const SideMenu = (): JSX.Element => {
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+import { FiShoppingBag, FiTag } from 'react-icons/fi';
+
+const Sidebar = (): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col justify-between w-16 h-screen bg-white border-r">
       <div>
@@ -9,34 +15,14 @@ const SideMenu = (): JSX.Element => {
         <div className="border-t border-gray-100">
           <nav className="flex flex-col p-2">
             <div className="py-4">
-              <a
-                href=""
-                className="flex justify-center px-2 py-1.5 t text-blue-700 rounded bg-blue-50 group relative"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 opacity-75"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-
-                <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100">
-                  General
-                </span>
-              </a>
+              <Link href="/products/add" passHref>
+                <a className="flex justify-center px-2 py-1.5 t text-blue-700 rounded bg-blue-50 group relative">
+                  <FiShoppingBag />
+                  <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100">
+                    {t('products')}
+                  </span>
+                </a>
+              </Link>
             </div>
 
             <ul className="pt-4 space-y-1 border-t border-gray-100">
@@ -45,53 +31,12 @@ const SideMenu = (): JSX.Element => {
                   href=""
                   className="flex justify-center px-2 py-1.5 text-gray-500 rounded hover:bg-gray-50 hover:text-gray-700 relative group"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5 opacity-75"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-
+                  <FiTag />
                   <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100">
-                    Teams
+                    {t('categories')}
                   </span>
                 </a>
               </li>
-
-              <li>
-                <a
-                  href=""
-                  className="flex relative group justify-center px-2 py-1.5 text-gray-500 rounded hover:bg-gray-50 hover:text-gray-700"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5 opacity-75"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </svg>
-
-                  <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100">
-                    Billing
-                  </span>
-                </a>
-              </li>
-
               <li>
                 <a
                   href=""
@@ -113,7 +58,7 @@ const SideMenu = (): JSX.Element => {
                   </svg>
 
                   <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100">
-                    Invoices
+                    {t('orders')}
                   </span>
                 </a>
               </li>
@@ -170,7 +115,7 @@ const SideMenu = (): JSX.Element => {
             </svg>
 
             <span className="absolute text-xs font-medium text-white bg-gray-900 left-full ml-4 px-2 py-1.5 top-1/2 -translate-y-1/2 rounded opacity-0 group-hover:opacity-100">
-              Logout
+              {t('logout')}
             </span>
           </button>
         </form>
@@ -179,4 +124,4 @@ const SideMenu = (): JSX.Element => {
   );
 };
 
-export default SideMenu;
+export default Sidebar;

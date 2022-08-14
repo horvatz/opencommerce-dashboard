@@ -1,4 +1,4 @@
-import SideMenu from './SideMenu';
+import Sidebar from './Sidebar';
 
 type Props = {
   children: React.ReactNode;
@@ -9,10 +9,10 @@ type Props = {
  */
 const OCLayout = ({ children }: Props) => {
   return (
-    <>
-      <SideMenu />
-      <main>{children}</main>
-    </>
+    <div className="flex">
+      <Sidebar />
+      <main className="container mx-auto">{children}</main>
+    </div>
   );
 };
 

@@ -1,18 +1,29 @@
-import SideMenu from './SideMenu';
+import { Box, Container } from '@mui/material';
+import Sidebar, { drawerWidth } from './Sidebar';
 
 type Props = {
   children: React.ReactNode;
 };
 
 /**
- * Opencommerce layout with side menu.
+ * Opencommerce layout with sidebar.
  */
 const OCLayout = ({ children }: Props) => {
   return (
-    <>
-      <SideMenu />
-      <main>{children}</main>
-    </>
+    <Box display="flex">
+      <Sidebar />
+      <Box
+        component="main"
+        position="relative"
+        height="100vh"
+        sx={{
+          flexGrow: 1,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <Container sx={{ py: 8 }}>{children}</Container>
+      </Box>
+    </Box>
   );
 };
 

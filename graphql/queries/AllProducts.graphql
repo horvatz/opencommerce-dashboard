@@ -1,5 +1,5 @@
 query AllProducts {
   products {
-    name
+    ...ProductDetails
   }
 }

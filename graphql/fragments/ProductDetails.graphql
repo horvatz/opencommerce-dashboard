@@ -1,0 +1,9 @@
+fragment ProductDetails on Product {
+  id
+  name
+  description
+  type
+  variants {
+    name
+  }
+}

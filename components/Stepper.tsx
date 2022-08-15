@@ -19,23 +19,24 @@ const Stepper = ({ steps, currentStepId }: Props): JSX.Element => {
     (step) => step.id === currentStepId
   );
 
+  const blueLineWidth =
+    indexOfCurrentStep === 0
+      ? 'w-0'
+      : indexOfCurrentStep === 1
+      ? 'w-1/2'
+      : 'w-full';
+
   return (
     <div>
       <h2 className="sr-only">{t('steps')}</h2>
       <div>
         <div className="overflow-hidden bg-gray-200 rounded-full">
           <div
-            className={`${
-              indexOfCurrentStep <= 0 ? 'w-0' : 'w-' + indexOfCurrentStep + '/2'
-            } h-2 bg-blue-500 rounded-full`}
+            className={`${blueLineWidth} h-2 bg-blue-500 rounded-full`}
           ></div>
         </div>
 
-        <ol
-          className={`grid ${
-            'grid-cols-' + steps.length
-          } mt-4 text-sm font-medium text-gray-500`}
-        >
+        <ol className="flex justify-between items-center mt-4 text-sm font-medium text-gray-500">
           <li
             key={steps[0].id}
             className={`flex items-center justify-start ${

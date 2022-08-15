@@ -1,9 +1,10 @@
 const en = {
-  appName: 'Opencommerce',
+  appName: 'opencommerce',
   // Sidebar
   products: 'Products',
   categories: 'Categories',
   orders: 'Orders',
+  taxRates: 'Tax Rates',
   logout: 'Logout',
   // Add product
   newProduct: 'New Product',
@@ -12,10 +13,22 @@ const en = {
   description: 'Description',
   basicDetails: 'Basic details',
   basicDetailsDescription:
-    'First enter some basic details about your shiny new product.',
+    'First enter some basic details about your shiny new product. You will add pictures and variants later.',
   reviewAndSave: 'Review and save',
+  createProduct: 'Create product',
+  sku: 'SKU',
+  weight: 'Weight (g)',
+  price: 'Price (EUR)',
+  salePrice: 'Sale price',
   // Product variant
   productVariants: 'Product variants',
+  addProductVariant: 'Add product variant',
+  // Product types
+  productType: 'Product type',
+  productTypeRegular: 'Regular',
+  productTypeDigital: 'Digital',
+  // Dropzone
+  dropImage: 'Drop an image here or click to select a file to upload',
   // Actions
   save: 'Save',
   next: 'Next',

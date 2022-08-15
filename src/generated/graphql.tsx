@@ -15,6 +15,7 @@ export type Scalars = {
   Float: number;
   DateTime: any;
   Decimal: any;
+  Upload: any;
 };
 
 export type Address = {
@@ -75,6 +76,11 @@ export type CreateAddressInput = {
   zipCode: Scalars['String'];
 };
 
+export type CreateProductCategoryInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
 export type CreateProductInput = {
   categories?: InputMaybe<Array<FindProductCategoryInput>>;
   description?: InputMaybe<Scalars['String']>;
@@ -95,11 +101,6 @@ export type CreateProductVariantWithProductInput = {
   weight?: InputMaybe<Scalars['Decimal']>;
 };
 
-export type CreateTestEndpointInput = {
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int'];
-};
-
 export type FindProductCategoryInput = {
   id: Scalars['Int'];
   name?: InputMaybe<Scalars['String']>;
@@ -117,15 +118,17 @@ export type Mutation = {
   checkoutBillingAddressUpdate: Checkout;
   checkoutComplete: Checkout;
   checkoutShippingAddressUpdate: Checkout;
-  createTestEndpoint: TestEndpoint;
+  createProductCategory: ProductCategory;
   productCreate: Product;
   productRemove: Product;
   productUpdate: Product;
   productVariantCreate: ProductVariant;
+  productVariantMediaRemove: ProductVariant;
+  productVariantMediaUpload: ProductVariant;
   productVariantRemove: ProductVariant;
   productVariantUpdate: ProductVariant;
-  removeTestEndpoint: TestEndpoint;
-  updateTestEndpoint: TestEndpoint;
+  removeProductCategory: ProductCategory;
+  updateProductCategory: ProductCategory;
 };
 
 
@@ -146,8 +149,8 @@ export type MutationCheckoutShippingAddressUpdateArgs = {
 };
 
 
-export type MutationCreateTestEndpointArgs = {
-  createTestEndpointInput: CreateTestEndpointInput;
+export type MutationCreateProductCategoryArgs = {
+  createProductCategoryInput: CreateProductCategoryInput;
 };
 
 
@@ -173,6 +176,18 @@ export type MutationProductVariantCreateArgs = {
 };
 
 
+export type MutationProductVariantMediaRemoveArgs = {
+  mediaId: Scalars['String'];
+  productVariantId: Scalars['String'];
+};
+
+
+export type MutationProductVariantMediaUploadArgs = {
+  file: Scalars['Upload'];
+  productVariantId: Scalars['String'];
+};
+
+
 export type MutationProductVariantRemoveArgs = {
   id: Scalars['String'];
 };
@@ -184,13 +199,13 @@ export type MutationProductVariantUpdateArgs = {
 };
 
 
-export type MutationRemoveTestEndpointArgs = {
+export type MutationRemoveProductCategoryArgs = {
   id: Scalars['Int'];
 };
 
 
-export type MutationUpdateTestEndpointArgs = {
-  updateTestEndpointInput: UpdateTestEndpointInput;
+export type MutationUpdateProductCategoryArgs = {
+  updateProductCategoryInput: UpdateProductCategoryInput;
 };
 
 export type Product = {
@@ -211,6 +226,13 @@ export type ProductCategory = {
   name: Scalars['String'];
 };
 
+export type ProductMedia = {
+  __typename?: 'ProductMedia';
+  fileName: Scalars['String'];
+  id: Scalars['ID'];
+  path: Scalars['String'];
+};
+
 export enum ProductType {
   Digital = 'DIGITAL',
   Regular = 'REGULAR'
@@ -219,6 +241,7 @@ export enum ProductType {
 export type ProductVariant = {
   __typename?: 'ProductVariant';
   available: Scalars['Boolean'];
+  categories?: Maybe<Array<ProductMedia>>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -232,9 +255,10 @@ export type Query = {
   __typename?: 'Query';
   checkout: Checkout;
   product: Product;
+  productCategories: Array<ProductCategory>;
+  productCategory: ProductCategory;
   productVariant: ProductVariant;
   products: Array<Product>;
-  testEndpoint: TestEndpoint;
 };
 
 
@@ -248,13 +272,13 @@ export type QueryProductArgs = {
 };
 
 
-export type QueryProductVariantArgs = {
-  id: Scalars['String'];
+export type QueryProductCategoryArgs = {
+  id: Scalars['Int'];
 };
 
 
-export type QueryTestEndpointArgs = {
-  id: Scalars['Int'];
+export type QueryProductVariantArgs = {
+  id: Scalars['String'];
 };
 
 export type ShippingMethod = {
@@ -276,10 +300,10 @@ export type TaxRate = {
   rate: Scalars['Decimal'];
 };
 
-export type TestEndpoint = {
-  __typename?: 'TestEndpoint';
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int'];
+export type UpdateProductCategoryInput = {
+  description?: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateProductInput = {
@@ -302,18 +326,30 @@ export type UpdateProductVariantWithProductInput = {
   weight?: InputMaybe<Scalars['Decimal']>;
 };
 
-export type UpdateTestEndpointInput = {
-  /** Example field (placeholder) */
-  exampleField?: InputMaybe<Scalars['Int']>;
-  id: Scalars['Int'];
-};
+export type ProductVariantDetailsFragment = { __typename?: 'ProductVariant', id: string, sku?: string | null, name: string, description?: string | null, weight?: any | null, available: boolean, price: any, salePrice?: any | null };
 
 export type AllProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AllProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', name: string }> };
 
+export type ProductCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type ProductCategoriesQuery = { __typename?: 'Query', productCategories: Array<{ __typename?: 'ProductCategory', id: string, name: string, description?: string | null }> };
+
+export const ProductVariantDetailsFragmentDoc = gql`
+    fragment ProductVariantDetails on ProductVariant {
+  id
+  sku
+  name
+  description
+  weight
+  available
+  price
+  salePrice
+}
+    `;
 export const AllProductsDocument = gql`
     query AllProducts {
   products {
@@ -348,3 +384,39 @@ export function useAllProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type AllProductsQueryHookResult = ReturnType<typeof useAllProductsQuery>;
 export type AllProductsLazyQueryHookResult = ReturnType<typeof useAllProductsLazyQuery>;
 export type AllProductsQueryResult = Apollo.QueryResult<AllProductsQuery, AllProductsQueryVariables>;
+export const ProductCategoriesDocument = gql`
+    query ProductCategories {
+  productCategories {
+    id
+    name
+    description
+  }
+}
+    `;
+
+/**
+ * __useProductCategoriesQuery__
+ *
+ * To run a query within a React component, call `useProductCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProductCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<ProductCategoriesQuery, ProductCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProductCategoriesQuery, ProductCategoriesQueryVariables>(ProductCategoriesDocument, options);
+      }
+export function useProductCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductCategoriesQuery, ProductCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProductCategoriesQuery, ProductCategoriesQueryVariables>(ProductCategoriesDocument, options);
+        }
+export type ProductCategoriesQueryHookResult = ReturnType<typeof useProductCategoriesQuery>;
+export type ProductCategoriesLazyQueryHookResult = ReturnType<typeof useProductCategoriesLazyQuery>;
+export type ProductCategoriesQueryResult = Apollo.QueryResult<ProductCategoriesQuery, ProductCategoriesQueryVariables>;

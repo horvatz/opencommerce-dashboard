@@ -5,13 +5,13 @@ type Props = {
 };
 
 /**
- * Opencommerce layout with side menu.
+ * Opencommerce layout with sidebar.
  */
 const OCLayout = ({ children }: Props) => {
   return (
-    <div className="flex">
+    <div className="flex flex-row h-screen w-screen">
       <Sidebar />
-      <main className="container mx-auto">{children}</main>
+      <main className="container grow overflow-y-scroll pt-28">{children}</main>
     </div>
   );
 };

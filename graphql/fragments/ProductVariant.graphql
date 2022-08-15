@@ -1,0 +1,10 @@
+fragment ProductVariantDetails on ProductVariant {
+  id
+  sku
+  name
+  description
+  weight
+  available
+  price
+  salePrice
+}

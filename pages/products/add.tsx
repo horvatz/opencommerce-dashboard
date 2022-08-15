@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiEdit, FiInfo, FiSave } from 'react-icons/fi';
-import Card from '../../components/cards/Card';
-import TextCard from '../../components/cards/TextCard';
 import Header from '../../components/layout/Header';
-import ProductBasicInfoForm from '../../components/products/forms/ProductBasicInfoForm';
+import BasicInfoStep from '../../components/products/wizard/BasicInfoStep';
+import VariantsStep from '../../components/products/wizard/VariantStep';
 import Stepper, { StepperStep } from '../../components/Stepper';
 import i18n from '../../utils/i18n';
 
@@ -19,25 +19,35 @@ const steps: StepperStep[] = [
   { id: 'product-save', name: i18n.t('reviewAndSave'), icon: <FiSave /> },
 ];
 
+/**
+ * Contains wizard for adding product.
+ *
+ * @returns {JSX.Element}
+ */
 const ProductAdd: NextPage = () => {
   const { t } = useTranslation();
+
+  // Current step of add product wizard
+  const [currentStep, setCurrentStep] = useState<StepperStep>(steps[0]);
 
   return (
     <>
       <Header title={t('newProduct')} subtitle={t('newProductDescription')} />
-      <div className="pb-8">
-        <Stepper steps={steps} currentStepId="product-basic-details" />
+      <div className="pt-4 py-8">
+        <Stepper steps={steps} currentStepId={currentStep.id} />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <ProductBasicInfoForm />
-        </Card>
-        <TextCard
-          icon={<FiInfo className="w-6 h-6 sm:w-8 sm:h-8 text-gray-500" />}
-          title={t('basicDetails')}
-          subtitle={t('basicDetailsDescription')}
-        />
-      </div>
+      {(() => {
+        switch (currentStep.id) {
+          case 'product-basic-details':
+            return (
+              <BasicInfoStep onComplete={() => setCurrentStep(steps[1])} />
+            );
+          case 'product-variants':
+            return <VariantsStep onComplete={() => setCurrentStep(steps[2])} />;
+          default:
+            return <></>;
+        }
+      })()}
     </>
   );
 };

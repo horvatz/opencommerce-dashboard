@@ -11,7 +11,7 @@ type Props = {
  *
  * @returns {JSX.Element}
  */
-const TextCard = ({ title, subtitle, icon }: Props) => {
+const TextCard = ({ title, subtitle, icon }: Props): JSX.Element => {
   return (
     <Card>
       {icon}

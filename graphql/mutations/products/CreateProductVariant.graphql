@@ -1,0 +1,8 @@
+mutation CreateProductVariant(
+  $productId: String!
+  $variant: CreateProductVariantWithProductInput!
+) {
+  productVariantCreate(productId: $productId, variant: $variant) {
+    ...ProductVariantDetails
+  }
+}

@@ -5,7 +5,15 @@ import { Formik } from 'formik';
 import TextField from '../../inputs/TextField';
 import { useTranslation } from 'react-i18next';
 import Button from '../../buttons/Button';
-import ImageDropzone from '../../ImageDropzone';
+import {
+  CreateProductVariantWithProductInput,
+  useCreateProductVariantMutation,
+} from '../../../generated/graphql';
+import { toast } from 'react-toastify';
+
+type Props = FormProps & {
+  productId: string;
+};
 
 const formProductVariantValidationSchema = yup.object().shape({
   name: yup
@@ -21,8 +29,20 @@ const formProductVariantValidationSchema = yup.object().shape({
   salePrice: yup.number().optional(),
 });
 
-const ProductVariantForm = ({ onSuccess }: FormProps) => {
+const ProductVariantForm = ({ productId, onSuccess }: Props) => {
   const { t } = useTranslation();
+
+  const [createProductVariant, { loading }] = useCreateProductVariantMutation();
+
+  const submit = async (values: CreateProductVariantWithProductInput) => {
+    try {
+      await createProductVariant({
+        variables: { productId: productId, variant: values },
+      });
+      toast.success(t('productVariantCreated'));
+      onSuccess();
+    } catch (error) {}
+  };
 
   return (
     <div>
@@ -33,12 +53,12 @@ const ProductVariantForm = ({ onSuccess }: FormProps) => {
           sku: '',
           weight: undefined,
           available: true,
-          price: undefined,
+          price: '',
           salePrice: undefined,
         }}
         validationSchema={formProductVariantValidationSchema}
-        onSubmit={() => {
-          onSuccess();
+        onSubmit={(values, { resetForm }) => {
+          submit(values).then(() => resetForm());
         }}
       >
         {({ values, touched, handleChange, handleSubmit, errors }) => (
@@ -107,10 +127,9 @@ const ProductVariantForm = ({ onSuccess }: FormProps) => {
                 onChange={handleChange}
               />
             </div>
-            <ImageDropzone />
             <Button
               type="submit"
-              background="bg-blue-600"
+              loading={loading}
               text={t('addProductVariant')}
             />
           </form>

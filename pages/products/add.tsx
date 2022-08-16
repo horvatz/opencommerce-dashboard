@@ -1,11 +1,13 @@
 import { NextPage } from 'next';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FiEdit, FiInfo, FiSave } from 'react-icons/fi';
+import { useRecoilValue } from 'recoil';
 import Header from '../../components/layout/Header';
 import BasicInfoStep from '../../components/products/wizard/BasicInfoStep';
 import VariantsStep from '../../components/products/wizard/VariantStep';
 import Stepper, { StepperStep } from '../../components/Stepper';
+import { useProductCategoriesQuery } from '../../generated/graphql';
+import { productWizardState } from '../../utils/atoms';
 import i18n from '../../utils/i18n';
 
 // Product add steps
@@ -26,28 +28,44 @@ const steps: StepperStep[] = [
  */
 const ProductAdd: NextPage = () => {
   const { t } = useTranslation();
+  const { error, data } = useProductCategoriesQuery();
 
-  // Current step of add product wizard
-  const [currentStep, setCurrentStep] = useState<StepperStep>(steps[0]);
+  // Get current step of add product wizard
+  const productWizard = useRecoilValue(productWizardState);
 
+  if (error) {
+    // TODO error handling
+    return <></>;
+  }
+
+  // Step by step wizard for product creationg
   return (
     <>
-      <Header title={t('newProduct')} subtitle={t('newProductDescription')} />
-      <div className="pt-4 py-8">
-        <Stepper steps={steps} currentStepId={currentStep.id} />
-      </div>
-      {(() => {
-        switch (currentStep.id) {
-          case 'product-basic-details':
-            return (
-              <BasicInfoStep onComplete={() => setCurrentStep(steps[1])} />
-            );
-          case 'product-variants':
-            return <VariantsStep onComplete={() => setCurrentStep(steps[2])} />;
-          default:
-            return <></>;
-        }
-      })()}
+      {data ? (
+        <>
+          <Header
+            title={t('newProduct')}
+            subtitle={t('newProductDescription')}
+          />
+          <div className="pt-4 py-8">
+            <Stepper steps={steps} currentStepId={productWizard.step} />
+          </div>
+          {(() => {
+            switch (productWizard.step) {
+              case 'product-basic-details':
+                return (
+                  <BasicInfoStep productCategories={data.productCategories} />
+                );
+              case 'product-variants':
+                return <VariantsStep />;
+              default:
+                return <></>;
+            }
+          })()}
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

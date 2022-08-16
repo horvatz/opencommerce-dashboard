@@ -11,7 +11,9 @@ const OCLayout = ({ children }: Props) => {
   return (
     <div className="flex flex-row h-screen w-screen">
       <Sidebar />
-      <main className="container grow overflow-y-scroll pt-28">{children}</main>
+      <main className="container grow overflow-y-scroll pt-28 pb-14">
+        {children}
+      </main>
     </div>
   );
 };

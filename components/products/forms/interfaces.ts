@@ -2,12 +2,12 @@
  * Props for all form components.
  */
 export type FormProps = {
-  onSuccess: () => void;
+  onSuccess: (id?: string) => void;
 };
 
 /**
  * Step type for the form stepper.
  */
 export type StepProps = {
-  onComplete: () => void;
+  onComplete?: () => void;
 };

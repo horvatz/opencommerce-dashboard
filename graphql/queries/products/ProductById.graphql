@@ -1,0 +1,5 @@
+query ProductById($id: String!) {
+  product(id: $id) {
+    ...ProductDetails
+  }
+}

@@ -1,0 +1,5 @@
+mutation RemoveProductVariant($id: String!) {
+  productVariantRemove(id: $id) {
+    ...ProductVariantDetails
+  }
+}

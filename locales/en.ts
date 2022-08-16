@@ -19,10 +19,13 @@ const en = {
   sku: 'SKU',
   weight: 'Weight (g)',
   price: 'Price (EUR)',
+  productCreated: 'Product successfully created',
   salePrice: 'Sale price',
   // Product variant
   productVariants: 'Product variants',
   addProductVariant: 'Add product variant',
+  productVariantCreated: 'Product variant successfully created',
+  productVariantRemoved: 'Product variant successfully removed',
   // Product types
   productType: 'Product type',
   productTypeRegular: 'Regular',
@@ -36,6 +39,9 @@ const en = {
   steps: 'Steps',
   // Form validation
   fieldRequired: '{{field}} is required field.',
+  // Errors
+  errorGraphql: 'GraphQL error: {{message}}',
+  errorNetwork: 'Network error: {{message}}',
 };
 
 export default en;

@@ -1,7 +1,5 @@
 query ProductCategories {
   productCategories {
-    id
-    name
-    description
+    ...ProductCategoryDetails
   }
 }

@@ -8,12 +8,18 @@ import Button from '../../buttons/Button';
 import SelectField, { SelectItem } from '../../inputs/SelectField';
 import { PRODUCT_TYPES } from '../../../utils/constants';
 import { FormProps } from './interfaces';
+import MultiSelectField from '../../inputs/MultiSelectField';
+import { useState } from 'react';
+import {
+  CreateProductInput,
+  ProductType,
+  useCreateProductMutation,
+} from '../../../generated/graphql';
+import { toast } from 'react-toastify';
 
-/*interface FormProductBasicInfo {
-  name: string;
-  description?: string;
-  type: ProductType;
-}*/
+type Props = FormProps & {
+  productCategories: SelectItem[];
+};
 
 const selectProductTypes: SelectItem[] = PRODUCT_TYPES.map((type) => ({
   value: type.toUpperCase(),
@@ -28,8 +34,26 @@ const formProductBasicInfoValidationSchema = yup.object().shape({
   type: yup.mixed().oneOf(['REGULAR', 'DIGITAL']).required(),
 });
 
-const ProductBasicInfoForm = ({ onSuccess }: FormProps): JSX.Element => {
+const ProductBasicInfoForm = ({
+  productCategories,
+  onSuccess,
+}: Props): JSX.Element => {
   const { t } = useTranslation();
+  const [selectedCategories, setSelectedCategories] = useState<SelectItem[]>(
+    []
+  );
+
+  const [createProduct, { loading, data: createProductData }] =
+    useCreateProductMutation();
+
+  const submit = async (values: CreateProductInput) => {
+    try {
+      //await createProduct({ variables: { product: values } });
+      toast.success(t('productCreated'));
+      // Send product id to parent
+      onSuccess('cl6p7lf5p0000usgnzp9otrah');
+    } catch (error) {}
+  };
 
   return (
     <div>
@@ -40,8 +64,17 @@ const ProductBasicInfoForm = ({ onSuccess }: FormProps): JSX.Element => {
           type: 'REGULAR',
         }}
         validationSchema={formProductBasicInfoValidationSchema}
-        onSubmit={() => {
-          onSuccess();
+        onSubmit={(values) => {
+          const { type, ...other } = values;
+
+          const productType = type as ProductType;
+
+          const categories = selectedCategories.map((category) => ({
+            id: Number(category.value),
+            name: category.label,
+          }));
+
+          submit({ type: productType, categories, ...other });
         }}
       >
         {({ values, touched, handleChange, handleSubmit, errors }) => (
@@ -73,11 +106,15 @@ const ProductBasicInfoForm = ({ onSuccess }: FormProps): JSX.Element => {
               errorMessage={errors.type}
               onChange={handleChange}
             />
-            <Button
-              type="submit"
-              background="bg-blue-600"
-              text={t('createProduct')}
+            <MultiSelectField
+              name="categories"
+              placeholder={t('categories')}
+              onChange={(categories) =>
+                setSelectedCategories(categories as SelectItem[])
+              }
+              options={productCategories}
             />
+            <Button type="submit" loading={loading} text={t('createProduct')} />
           </form>
         )}
       </Formik>

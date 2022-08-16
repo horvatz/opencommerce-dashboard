@@ -16,7 +16,7 @@ type Props = StepProps & {
 /**
  * Step for add product wizard that allows the user to enter basic product information.
  */
-const BasicInfoStep = ({ productCategories }: Props) => {
+const BasicInfoStep = ({ productCategories }: Props): JSX.Element => {
   const { t } = useTranslation();
   const setProductWizard = useSetRecoilState(productWizardState);
 

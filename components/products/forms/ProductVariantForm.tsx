@@ -10,9 +10,12 @@ import {
   useCreateProductVariantMutation,
 } from '../../../generated/graphql';
 import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
+import { productWizardState } from '../../../utils/atoms';
 
 type Props = FormProps & {
   productId: string;
+  showNextStepButton: boolean;
 };
 
 const formProductVariantValidationSchema = yup.object().shape({
@@ -29,8 +32,13 @@ const formProductVariantValidationSchema = yup.object().shape({
   salePrice: yup.number().optional(),
 });
 
-const ProductVariantForm = ({ productId, onSuccess }: Props) => {
+const ProductVariantForm = ({
+  productId,
+  onSuccess,
+  showNextStepButton = false,
+}: Props) => {
   const { t } = useTranslation();
+  const setProductWizard = useSetRecoilState(productWizardState);
 
   const [createProductVariant, { loading }] = useCreateProductVariantMutation();
 
@@ -42,6 +50,14 @@ const ProductVariantForm = ({ productId, onSuccess }: Props) => {
       toast.success(t('productVariantCreated'));
       onSuccess();
     } catch (error) {}
+  };
+
+  // Update wizard with next step
+  const updateWizardData = () => {
+    setProductWizard({
+      productId: productId,
+      step: 'product-review',
+    });
   };
 
   return (
@@ -127,11 +143,22 @@ const ProductVariantForm = ({ productId, onSuccess }: Props) => {
                 onChange={handleChange}
               />
             </div>
-            <Button
-              type="submit"
-              loading={loading}
-              text={t('addProductVariant')}
-            />
+            <div className="flex flex-col gap-3">
+              <Button
+                type="submit"
+                loading={loading}
+                text={t('addProductVariant')}
+              />
+              {showNextStepButton && (
+                <Button
+                  type="submit"
+                  onClick={updateWizardData}
+                  loading={loading}
+                  variant="outlined"
+                  text={t('nextStep')}
+                />
+              )}
+            </div>
           </form>
         )}
       </Formik>

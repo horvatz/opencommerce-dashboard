@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import {
   useProductByIdQuery,
   useRemoveProductVariantMutation,
@@ -13,9 +13,9 @@ import ProductVariantForm from '../forms/ProductVariantForm';
 /**
  * Step for add product wizard that allows the user to create variants for the product.
  */
-const VariantsStep = () => {
+const VariantsStep = (): JSX.Element => {
   const { t } = useTranslation();
-  const [productWizard, setProductWizard] = useRecoilState(productWizardState);
+  const productWizard = useRecoilValue(productWizardState);
 
   const {
     data: productsData,
@@ -49,6 +49,7 @@ const VariantsStep = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
         <ProductVariantForm
+          showNextStepButton={Boolean(productsData?.product.variants?.length)}
           productId={productWizard.productId}
           onSuccess={async () => await refetchProductById()}
         />

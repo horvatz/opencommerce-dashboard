@@ -26,12 +26,15 @@ const Button = ({
     color === ButtonColor.PRIMARY ? 'text-blue-600' : 'text-green-600';
 
   if (variant === 'outlined') {
-    <button
-      className={`inline-block px-8 py-3 text-sm font-medium ${textColorOutlined} transition border border-current rounded hover:scale-103 hover:shadow-xl active:${textColorOutlined} focus:outline-none focus:ring`}
-      {...rest}
-    >
-      {text}
-    </button>;
+    return (
+      <button
+        className={`inline-flex items-center justify-center px-8 py-5 text-sm font-medium ${textColorOutlined} transition border border-current rounded hover:scale-103 hover:shadow-xl active:${textColorOutlined} focus:outline-none focus:ring`}
+        {...rest}
+      >
+        {loading && <FiLoader className="h-5 w-5 mr-3 animate-spin" />}
+        {text}
+      </button>
+    );
   }
 
   return (

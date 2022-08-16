@@ -4,6 +4,7 @@ import { FiEdit, FiInfo, FiSave } from 'react-icons/fi';
 import { useRecoilValue } from 'recoil';
 import Header from '../../components/layout/Header';
 import BasicInfoStep from '../../components/products/wizard/BasicInfoStep';
+import ReviewStep from '../../components/products/wizard/ReviewStep';
 import VariantsStep from '../../components/products/wizard/VariantStep';
 import Stepper, { StepperStep } from '../../components/Stepper';
 import { useProductCategoriesQuery } from '../../generated/graphql';
@@ -18,7 +19,7 @@ const steps: StepperStep[] = [
     icon: <FiInfo />,
   },
   { id: 'product-variants', name: i18n.t('productVariants'), icon: <FiEdit /> },
-  { id: 'product-save', name: i18n.t('reviewAndSave'), icon: <FiSave /> },
+  { id: 'product-review', name: i18n.t('reviewAndSave'), icon: <FiSave /> },
 ];
 
 /**
@@ -37,6 +38,8 @@ const ProductAdd: NextPage = () => {
     // TODO error handling
     return <></>;
   }
+
+  console.log(productWizard.step);
 
   // Step by step wizard for product creationg
   return (
@@ -58,6 +61,8 @@ const ProductAdd: NextPage = () => {
                 );
               case 'product-variants':
                 return <VariantsStep />;
+              case 'product-review':
+                return <ReviewStep />;
               default:
                 return <></>;
             }

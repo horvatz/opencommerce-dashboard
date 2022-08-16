@@ -21,7 +21,7 @@ const ProductVariantCard = ({ variant, onRemove }: Props): JSX.Element => {
           <FiHash /> {variant.sku}
         </div>
         <div className="inline-flex gap-1 items-center text-gray-500">
-          <FiPackage /> {variant.weight}
+          <FiPackage /> {variant.weight} g
         </div>
         <p className="text-gray-900 font-medium">{variant.price} EUR</p>
       </div>

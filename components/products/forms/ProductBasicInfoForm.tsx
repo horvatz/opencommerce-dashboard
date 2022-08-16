@@ -43,15 +43,17 @@ const ProductBasicInfoForm = ({
     []
   );
 
-  const [createProduct, { loading, data: createProductData }] =
-    useCreateProductMutation();
+  const [createProduct, { loading }] = useCreateProductMutation();
 
   const submit = async (values: CreateProductInput) => {
     try {
-      //await createProduct({ variables: { product: values } });
-      toast.success(t('productCreated'));
+      const createProductData = await createProduct({
+        variables: { product: values },
+      });
       // Send product id to parent
-      onSuccess('cl6p7lf5p0000usgnzp9otrah');
+      onSuccess(createProductData.data?.productCreate.id);
+      toast.success(t('productCreated'));
+      console.log('kurac');
     } catch (error) {}
   };
 

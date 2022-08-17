@@ -6,6 +6,11 @@ export type FormProps = {
 };
 
 /**
+ * Form mode
+ */
+export type FormMode = 'create' | 'edit';
+
+/**
  * Step type for the form stepper.
  */
 export type StepProps = {

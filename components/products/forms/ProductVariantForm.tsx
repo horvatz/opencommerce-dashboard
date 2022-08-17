@@ -1,21 +1,30 @@
-import { FormProps } from './interfaces';
 import * as yup from 'yup';
 import i18n from '../../../utils/i18n';
 import { Formik } from 'formik';
 import TextField from '../../inputs/TextField';
 import { useTranslation } from 'react-i18next';
 import Button from '../../buttons/Button';
-import {
-  CreateProductVariantWithProductInput,
-  useCreateProductVariantMutation,
-} from '../../../generated/graphql';
-import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { productWizardState } from '../../../utils/atoms';
+import { FormMode } from './interfaces';
 
-type Props = FormProps & {
+export interface ProductVariantFormProps {
+  name: string;
+  description: string;
+  sku: string;
+  weight?: number;
+  available: boolean;
+  price: number;
+  salePrice?: number;
+}
+
+type Props = {
+  onSuccess: (values: ProductVariantFormProps) => void;
+  values?: ProductVariantFormProps;
+  mode?: FormMode;
   productId: string;
-  showNextStepButton: boolean;
+  loading?: boolean;
+  showNextStepButton?: boolean;
 };
 
 const formProductVariantValidationSchema = yup.object().shape({
@@ -24,33 +33,25 @@ const formProductVariantValidationSchema = yup.object().shape({
     .required(i18n.t('fieldRequired', { field: i18n.t('name') })),
   description: yup.string().optional(),
   sku: yup.string().optional(),
-  weight: yup.number().optional(),
+  weight: yup.number().min(0.001).optional(),
   available: yup.boolean().optional(),
   price: yup
     .number()
+    .min(0.01, i18n.t('fieldRequired', { field: i18n.t('price') }))
     .required(i18n.t('fieldRequired', { field: i18n.t('price') })),
   salePrice: yup.number().optional(),
 });
 
 const ProductVariantForm = ({
   productId,
+  values,
   onSuccess,
+  loading = false,
+  mode = 'create',
   showNextStepButton = false,
 }: Props) => {
   const { t } = useTranslation();
   const setProductWizard = useSetRecoilState(productWizardState);
-
-  const [createProductVariant, { loading }] = useCreateProductVariantMutation();
-
-  const submit = async (values: CreateProductVariantWithProductInput) => {
-    try {
-      await createProductVariant({
-        variables: { productId: productId, variant: values },
-      });
-      toast.success(t('productVariantCreated'));
-      onSuccess();
-    } catch (error) {}
-  };
 
   // Update wizard with next step
   const updateWizardData = () => {
@@ -60,21 +61,30 @@ const ProductVariantForm = ({
     });
   };
 
+  const initialValues = values
+    ? { ...values }
+    : {
+        name: '',
+        description: '',
+        sku: '',
+        weight: '',
+        available: true,
+        price: '',
+        salePrice: '',
+      };
+
   return (
     <div>
       <Formik
-        initialValues={{
-          name: '',
-          description: '',
-          sku: '',
-          weight: undefined,
-          available: true,
-          price: '',
-          salePrice: undefined,
-        }}
+        initialValues={initialValues}
         validationSchema={formProductVariantValidationSchema}
         onSubmit={(values, { resetForm }) => {
-          submit(values).then(() => resetForm());
+          onSuccess({
+            ...values,
+            weight: values.weight ? Number(values.weight) : undefined,
+            price: Number(values.price),
+            salePrice: Number(values.salePrice),
+          });
         }}
       >
         {({ values, touched, handleChange, handleSubmit, errors }) => (
@@ -147,7 +157,11 @@ const ProductVariantForm = ({
               <Button
                 type="submit"
                 loading={loading}
-                text={t('addProductVariant')}
+                text={t(
+                  mode === 'create'
+                    ? 'addProductVariant'
+                    : 'updateProductVariant'
+                )}
               />
               {showNextStepButton && (
                 <Button

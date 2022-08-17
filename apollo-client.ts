@@ -1,15 +1,18 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache,
-} from '@apollo/client';
+import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client';
+
+import createUploadLink from 'apollo-upload-client/public/createUploadLink.js';
+
 import { onError } from '@apollo/client/link/error';
 import { toast } from 'react-toastify';
 import i18n from './utils/i18n';
 
 // API endpoint from .env
 const GRAPHQL_URI = process.env.NEXT_PUBLIC_API_URI;
+
+// File upload handling
+const uploadLink = createUploadLink({
+  uri: GRAPHQL_URI,
+});
 
 // Error handling
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -28,8 +31,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Apollo client
 const client = new ApolloClient({
+  link: ApolloLink.from([errorLink, uploadLink]),
   cache: new InMemoryCache(),
-  link: ApolloLink.from([errorLink, new HttpLink({ uri: GRAPHQL_URI })]),
 });
 
 export default client;

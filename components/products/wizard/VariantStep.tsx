@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import {
+  CreateProductVariantWithProductInput,
+  useCreateProductVariantMutation,
   useProductByIdQuery,
   useRemoveProductVariantMutation,
 } from '../../../generated/graphql';
@@ -26,11 +28,10 @@ const VariantsStep = (): JSX.Element => {
     skip: !productWizard.productId,
   });
 
-  const [removeProductVariant] = useRemoveProductVariantMutation();
+  const [createProductVariant, { loading: createProductVariantLoading }] =
+    useCreateProductVariantMutation();
 
-  if (!productWizard.productId || error) {
-    return <></>;
-  }
+  const [removeProductVariant] = useRemoveProductVariantMutation();
 
   const removeProductVariantHandler = async (variantId: string) => {
     try {
@@ -45,13 +46,33 @@ const VariantsStep = (): JSX.Element => {
     refetchProductById();
   };
 
+  const createProductVariantHandler = async (
+    data: CreateProductVariantWithProductInput
+  ) => {
+    if (productWizard.productId) {
+      try {
+        await createProductVariant({
+          variables: { productId: productWizard.productId, variant: data },
+        });
+
+        toast.success(t('productVariantCreated'));
+      } catch (error) {}
+      refetchProductById();
+    }
+  };
+
+  if (!productWizard.productId || error) {
+    return <></>;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
         <ProductVariantForm
+          loading={createProductVariantLoading}
           showNextStepButton={Boolean(productsData?.product.variants?.length)}
           productId={productWizard.productId}
-          onSuccess={async () => await refetchProductById()}
+          onSuccess={(values) => createProductVariantHandler(values)}
         />
       </Card>
       <div className="flex flex-col gap-6">

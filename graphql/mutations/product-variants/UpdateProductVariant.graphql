@@ -1,0 +1,8 @@
+mutation UpdateProductVariant(
+  $id: String!
+  $variant: UpdateProductVariantWithProductInput!
+) {
+  productVariantUpdate(id: $id, variant: $variant) {
+    ...ProductVariantDetails
+  }
+}

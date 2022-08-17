@@ -1,0 +1,13 @@
+mutation UploadProductMedia(
+  $productId: String!
+  $metadata: String
+  $file: Upload!
+) {
+  productMediaUpload(
+    productId: "cl6xqyfud0008j3gnyesk05tx"
+    metadata: $metadata
+    file: $file
+  ) {
+    ...ProductDetails
+  }
+}

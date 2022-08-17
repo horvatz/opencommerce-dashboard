@@ -29,7 +29,11 @@ const en = {
   variants: 'Variants',
   productVariants: 'Product variants',
   addProductVariant: 'Add product variant',
+  updateProductVariant: 'Update product variant',
+  newVariant: 'New variant',
+  editVariant: 'Edit variant',
   productVariantCreated: 'Product variant successfully created',
+  productVariantUpdated: 'Product variant successfully updated',
   productVariantRemoved: 'Product variant successfully removed',
   // Edit product
   productUpdated: 'Product successfully updated',

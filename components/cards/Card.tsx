@@ -2,6 +2,8 @@ type Props = {
   children: React.ReactNode;
   background?: string;
   padding?: string;
+  margin?: string;
+  fullHeight?: boolean;
 };
 
 /**
@@ -12,13 +14,17 @@ type Props = {
 const Card = ({
   children,
   padding = 'p-8',
-  background,
+  margin = 'mt-4',
+  fullHeight = false,
+  background = 'bg-white',
 }: Props): JSX.Element => {
   return (
     <div
-      className={`relative ${background}  block h-min ${padding} border border-gray-100 shadow-xl rounded-xl`}
+      className={`relative ${background} block ${
+        fullHeight ? 'h-full' : 'h-min'
+      } ${padding} border border-gray-100 shadow-xl rounded-xl`}
     >
-      <div className="mt-4">{children}</div>
+      <div className={margin}>{children}</div>
     </div>
   );
 };

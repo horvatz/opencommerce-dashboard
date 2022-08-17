@@ -7,7 +7,6 @@ import BasicInfoStep from '../../components/products/wizard/BasicInfoStep';
 import ReviewStep from '../../components/products/wizard/ReviewStep';
 import VariantsStep from '../../components/products/wizard/VariantStep';
 import Stepper, { StepperStep } from '../../components/Stepper';
-import { useProductCategoriesQuery } from '../../generated/graphql';
 import { productWizardState } from '../../utils/atoms';
 import i18n from '../../utils/i18n';
 
@@ -29,48 +28,29 @@ const steps: StepperStep[] = [
  */
 const ProductAdd: NextPage = () => {
   const { t } = useTranslation();
-  const { error, data } = useProductCategoriesQuery();
 
   // Get current step of add product wizard
   const productWizard = useRecoilValue(productWizardState);
 
-  if (error) {
-    // TODO error handling
-    return <></>;
-  }
-
-  console.log(productWizard.step);
-
   // Step by step wizard for product creationg
   return (
     <>
-      {data ? (
-        <>
-          <Header
-            title={t('newProduct')}
-            subtitle={t('newProductDescription')}
-          />
-          <div className="pt-4 py-8">
-            <Stepper steps={steps} currentStepId={productWizard.step} />
-          </div>
-          {(() => {
-            switch (productWizard.step) {
-              case 'product-basic-details':
-                return (
-                  <BasicInfoStep productCategories={data.productCategories} />
-                );
-              case 'product-variants':
-                return <VariantsStep />;
-              case 'product-review':
-                return <ReviewStep />;
-              default:
-                return <></>;
-            }
-          })()}
-        </>
-      ) : (
-        <></>
-      )}
+      <Header title={t('newProduct')} subtitle={t('newProductDescription')} />
+      <div className="pt-4 py-8">
+        <Stepper steps={steps} currentStepId={productWizard.step} />
+      </div>
+      {(() => {
+        switch (productWizard.step) {
+          case 'product-basic-details':
+            return <BasicInfoStep />;
+          case 'product-variants':
+            return <VariantsStep />;
+          case 'product-review':
+            return <ReviewStep />;
+          default:
+            return <></>;
+        }
+      })()}
     </>
   );
 };

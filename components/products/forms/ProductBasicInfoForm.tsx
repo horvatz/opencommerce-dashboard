@@ -7,18 +7,24 @@ import i18n from '../../../utils/i18n';
 import Button from '../../buttons/Button';
 import SelectField, { SelectItem } from '../../inputs/SelectField';
 import { PRODUCT_TYPES } from '../../../utils/constants';
-import { FormProps } from './interfaces';
 import MultiSelectField from '../../inputs/MultiSelectField';
 import { useState } from 'react';
 import {
-  CreateProductInput,
   ProductType,
-  useCreateProductMutation,
+  useProductCategoriesQuery,
 } from '../../../generated/graphql';
-import { toast } from 'react-toastify';
 
-type Props = FormProps & {
-  productCategories: SelectItem[];
+export interface ProductBasicInfoFormProps {
+  name: string;
+  description: string;
+  type: ProductType;
+  categories: { id: number; name: string }[];
+}
+
+type Props = {
+  onSuccess: (values: ProductBasicInfoFormProps) => void;
+  values?: ProductBasicInfoFormProps;
+  loading?: boolean;
 };
 
 const selectProductTypes: SelectItem[] = PRODUCT_TYPES.map((type) => ({
@@ -32,39 +38,50 @@ const formProductBasicInfoValidationSchema = yup.object().shape({
     .required(i18n.t('fieldRequired', { field: i18n.t('name') })),
   description: yup.string().optional(),
   type: yup.mixed().oneOf(['REGULAR', 'DIGITAL']).required(),
+  categories: yup
+    .array()
+    .of(
+      yup
+        .object()
+        .shape({ id: yup.number().required(), name: yup.string().required() })
+    )
+    .optional(),
 });
 
 const ProductBasicInfoForm = ({
-  productCategories,
   onSuccess,
+  values,
+  loading = false,
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const [selectedCategories, setSelectedCategories] = useState<SelectItem[]>(
     []
   );
 
-  const [createProduct, { loading }] = useCreateProductMutation();
+  const {
+    data: categoriesData,
+    loading: categoriesDataLoading,
+    error: categoriesDataError,
+  } = useProductCategoriesQuery();
 
-  const submit = async (values: CreateProductInput) => {
-    try {
-      const createProductData = await createProduct({
-        variables: { product: values },
-      });
-      // Send product id to parent
-      onSuccess(createProductData.data?.productCreate.id);
-      toast.success(t('productCreated'));
-      console.log('kurac');
-    } catch (error) {}
-  };
+  const initialValues = values
+    ? { name: values.name, description: values.description, type: values.type }
+    : { name: '', description: '', type: 'REGULAR' };
+
+  const selectableCategoryOptions: SelectItem[] =
+    categoriesData?.productCategories?.map((category) => ({
+      value: category.id,
+      label: category.name,
+    })) ?? [];
+
+  if (categoriesDataLoading || categoriesDataError || !categoriesData) {
+    return <></>;
+  }
 
   return (
     <div>
       <Formik
-        initialValues={{
-          name: '',
-          description: '',
-          type: 'REGULAR',
-        }}
+        initialValues={initialValues}
         validationSchema={formProductBasicInfoValidationSchema}
         onSubmit={(values) => {
           const { type, ...other } = values;
@@ -76,7 +93,12 @@ const ProductBasicInfoForm = ({
             name: category.label,
           }));
 
-          submit({ type: productType, categories, ...other });
+          onSuccess({
+            name: other.name,
+            description: other.description,
+            type: productType,
+            categories: categories,
+          });
         }}
       >
         {({ values, touched, handleChange, handleSubmit, errors }) => (
@@ -114,7 +136,7 @@ const ProductBasicInfoForm = ({
               onChange={(categories) =>
                 setSelectedCategories(categories as SelectItem[])
               }
-              options={productCategories}
+              options={selectableCategoryOptions}
             />
             <Button type="submit" loading={loading} text={t('createProduct')} />
           </form>

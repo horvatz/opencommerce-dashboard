@@ -5,6 +5,7 @@ const en = {
   categories: 'Categories',
   orders: 'Orders',
   taxRates: 'Tax Rates',
+  catalog: 'Catalog',
   logout: 'Logout',
   // Add product
   newProduct: 'New Product',
@@ -30,6 +31,8 @@ const en = {
   addProductVariant: 'Add product variant',
   productVariantCreated: 'Product variant successfully created',
   productVariantRemoved: 'Product variant successfully removed',
+  // Edit product
+  productUpdated: 'Product successfully updated',
   // Product types
   productType: 'Product type',
   productTypeRegular: 'Regular',
@@ -48,6 +51,8 @@ const en = {
   // Errors
   errorGraphql: 'GraphQL error: {{message}}',
   errorNetwork: 'Network error: {{message}}',
+  // Other
+  id: 'ID',
 };
 
 export default en;

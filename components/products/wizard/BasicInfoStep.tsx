@@ -1,28 +1,25 @@
 import { useTranslation } from 'react-i18next';
 import { FiInfo } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
-import { ProductCategoryDetailsFragment } from '../../../generated/graphql';
+import {
+  CreateProductInput,
+  useCreateProductMutation,
+} from '../../../generated/graphql';
 import { productWizardState } from '../../../utils/atoms';
 import Card from '../../cards/Card';
 import TextCard from '../../cards/TextCard';
-import { SelectItem } from '../../inputs/SelectField';
-import { StepProps } from '../forms/interfaces';
 import ProductBasicInfoForm from '../forms/ProductBasicInfoForm';
-
-type Props = StepProps & {
-  productCategories: ProductCategoryDetailsFragment[];
-};
 
 /**
  * Step for add product wizard that allows the user to enter basic product information.
  */
-const BasicInfoStep = ({ productCategories }: Props): JSX.Element => {
+const BasicInfoStep = (): JSX.Element => {
   const { t } = useTranslation();
   const setProductWizard = useSetRecoilState(productWizardState);
 
-  const selectableCategoryOptions: SelectItem[] = productCategories.map(
-    (category) => ({ value: category.id, label: category.name })
-  );
+  const [createProduct, { loading: createProductLoading }] =
+    useCreateProductMutation();
 
   // Update wizard with next step and product id
   const updateWizardData = (productId: string) => {
@@ -32,14 +29,25 @@ const BasicInfoStep = ({ productCategories }: Props): JSX.Element => {
     });
   };
 
+  /**
+   * Handle form submit when successfull validation.
+   */
+  const submit = async (data: CreateProductInput) => {
+    try {
+      const product = await createProduct({ variables: { product: data } });
+      toast.success(t('productCreated'));
+      if (product.data) {
+        updateWizardData(product.data?.productCreate.id);
+      }
+    } catch (error) {}
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
         <ProductBasicInfoForm
-          productCategories={selectableCategoryOptions}
-          onSuccess={(productId) =>
-            productId ? updateWizardData(productId) : null
-          }
+          loading={createProductLoading}
+          onSuccess={(values) => submit(values)}
         />
       </Card>
       <TextCard

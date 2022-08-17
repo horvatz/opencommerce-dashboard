@@ -9,4 +9,7 @@ fragment ProductDetails on Product {
   variants {
     ...ProductVariantDetails
   }
+  media {
+    ...ProductMediaDetails
+  }
 }

@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ag-theme-material {
+  --ag-header-foreground-color: rgb(107 114 128) !important;
+  --ag-header-background-color: 'red' !important;
+  --ag-font-size: 0.8rem !important;
+}

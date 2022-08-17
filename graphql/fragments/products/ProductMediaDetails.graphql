@@ -1,0 +1,6 @@
+fragment ProductMediaDetails on ProductMedia {
+  id
+  filename
+  path
+  metadata
+}

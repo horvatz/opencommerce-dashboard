@@ -32,7 +32,7 @@ const formProductVariantValidationSchema = yup.object().shape({
     .string()
     .required(i18n.t('fieldRequired', { field: i18n.t('name') })),
   description: yup.string().optional(),
-  sku: yup.string().optional(),
+  sku: yup.string().required(i18n.t('fieldRequired', { field: i18n.t('sku') })),
   weight: yup.number().min(0.001).optional(),
   available: yup.boolean().optional(),
   price: yup
@@ -78,7 +78,7 @@ const ProductVariantForm = ({
       <Formik
         initialValues={initialValues}
         validationSchema={formProductVariantValidationSchema}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={(values) => {
           onSuccess({
             ...values,
             weight: values.weight ? Number(values.weight) : undefined,

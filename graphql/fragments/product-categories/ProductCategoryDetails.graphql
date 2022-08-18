@@ -2,4 +2,9 @@ fragment ProductCategoryDetails on ProductCategory {
   id
   name
   description
+  products {
+    id
+    name
+    description
+  }
 }

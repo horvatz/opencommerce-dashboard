@@ -1,0 +1,8 @@
+mutation UpdateProductCategory(
+  $id: Int!
+  $category: UpdateProductCategoryInput!
+) {
+  updateProductCategory(id: $id, category: $category) {
+    ...ProductCategoryDetails
+  }
+}

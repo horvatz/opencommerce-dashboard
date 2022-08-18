@@ -87,8 +87,8 @@ const ProductsTable = ({ products }: Props) => {
   };
 
   return (
-    <div className="h-full w-full bg-white border border-gray-100 shadow-xl rounded-xl">
-      <div className="ag-theme-material h-full">
+    <div className="w-full p-1 h-full bg-white border border-gray-100 shadow-xl rounded-xl">
+      <div className="ag-theme-material h-full w-full">
         <AgGridReact
           ref={gridRef}
           rowData={rowData}

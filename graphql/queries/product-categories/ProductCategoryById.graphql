@@ -1,0 +1,5 @@
+query ProductCategoryById($id: Int!) {
+  productCategory(id: $id) {
+    ...ProductCategoryDetails
+  }
+}

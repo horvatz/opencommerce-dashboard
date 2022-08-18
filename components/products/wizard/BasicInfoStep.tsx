@@ -51,7 +51,7 @@ const BasicInfoStep = (): JSX.Element => {
         />
       </Card>
       <TextCard
-        icon={<FiInfo className="w-6 h-6 sm:w-8 sm:h-8 text-gray-500" />}
+        icon={<FiInfo />}
         title={t('basicDetails')}
         subtitle={t('basicDetailsDescription')}
       />

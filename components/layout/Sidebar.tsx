@@ -60,7 +60,7 @@ const Sidebar = (): JSX.Element => {
                 </a>
               </Link>
 
-              <Link href="/categories" passHref>
+              <Link href="/products/categories" passHref>
                 <a className="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                   <FiTag opacity={75} className="h-5 w-5" />
                   <span className="ml-3 text-sm font-medium">

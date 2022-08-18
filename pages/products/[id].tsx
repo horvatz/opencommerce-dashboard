@@ -12,11 +12,13 @@ import {
   ProductVariantDetailsFragment,
   UpdateProductInput,
   useProductByIdLazyQuery,
+  useRemoveProductMutation,
   useRemoveProductVariantMutation,
   useUpdateProductMutation,
 } from '../../generated/graphql';
-import { FiPlusCircle } from 'react-icons/fi';
+import { FiLoader, FiPlusCircle } from 'react-icons/fi';
 import EditVariantDialog from '../../components/dialogs/EditVariantDialog';
+import Button, { ButtonColor } from '../../components/buttons/Button';
 
 const ProductDetails: NextPage = () => {
   const { t } = useTranslation();
@@ -39,6 +41,8 @@ const ProductDetails: NextPage = () => {
   // Product update mutation
   const [updateProductData, { loading: updateLoading }] =
     useUpdateProductMutation();
+  // Remove product
+  const [removeProduct] = useRemoveProductMutation();
   // Remove product variant
   const [removeProductVariantData, { loading: removeVariantLoading }] =
     useRemoveProductVariantMutation();
@@ -74,6 +78,13 @@ const ProductDetails: NextPage = () => {
     } catch (error) {}
   };
 
+  const handleProductRemove = async (productId: string) => {
+    try {
+      await removeProduct({ variables: { id: productId } });
+      router.push('/products');
+    } catch (error) {}
+  };
+
   const handleEditDialogSuccess = () => {
     try {
       setVariantDialog({ open: false, variant: null });
@@ -97,6 +108,7 @@ const ProductDetails: NextPage = () => {
             {t('basicDetails')}
           </h2>
           <ProductBasicInfoForm
+            mode="edit"
             loading={updateLoading}
             values={{
               name: product.name,
@@ -109,13 +121,20 @@ const ProductDetails: NextPage = () => {
             }}
             onSuccess={(values) => updateProduct(product.id, values)}
           />
+          <div className="flex flex-col pt-3">
+            <Button
+              color={ButtonColor.ALERT}
+              text={t('removeProduct')}
+              onClick={() => handleProductRemove(product.id)}
+            />
+          </div>
         </Card>
         <div>
           <Card margin="0">
             <div className="inline-flex justify-between items-center w-full pb-6">
               <h2 className="text-xl font-medium text-gray-900">
                 {t('variants')}{' '}
-                {product.variants.length > 0
+                {product.variants && product.variants.length > 0
                   ? `(${product.variants.length})`
                   : ''}
               </h2>
@@ -127,17 +146,21 @@ const ProductDetails: NextPage = () => {
                 <FiPlusCircle />
               </span>
             </div>
-            <div className="overflow-y-scroll flex flex-col gap-6">
-              {product.variants?.map((variant) => (
-                <ProductVariantItem
-                  onRemove={() => handleRemoveVariant(variant.id)}
-                  onEdit={() =>
-                    setVariantDialog({ open: true, variant: variant })
-                  }
-                  key={variant.id}
-                  variant={variant}
-                />
-              ))}
+            <div className="overflow-y-scroll justify-center items-center flex flex-col gap-6">
+              {removeVariantLoading ? (
+                <FiLoader className="h-5 w-5 mr-3 animate-spin" />
+              ) : (
+                product.variants?.map((variant) => (
+                  <ProductVariantItem
+                    onRemove={() => handleRemoveVariant(variant.id)}
+                    onEdit={() =>
+                      setVariantDialog({ open: true, variant: variant })
+                    }
+                    key={variant.id}
+                    variant={variant}
+                  />
+                ))
+              )}
             </div>
           </Card>
         </div>

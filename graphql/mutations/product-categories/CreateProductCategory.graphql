@@ -1,0 +1,5 @@
+mutation CreateProductCategory($category: CreateProductCategoryInput!) {
+  createProductCategory(category: $category) {
+    ...ProductCategoryDetails
+  }
+}

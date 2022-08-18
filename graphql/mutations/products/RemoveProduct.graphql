@@ -1,0 +1,5 @@
+mutation RemoveProduct($id: String!) {
+  productRemove(id: $id) {
+    ...ProductDetails
+  }
+}

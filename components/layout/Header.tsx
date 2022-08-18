@@ -1,12 +1,24 @@
+import Button from '../buttons/Button';
+
 type Props = {
   title: string;
   subtitle?: string;
+  actionText?: string;
+  onAction?: () => void;
 };
 
-const Header = ({ title, subtitle }: Props): JSX.Element => {
+/**
+ * Header for opencommerce pages, to show action button on right pass actionText + onAction.
+ */
+const Header = ({
+  title,
+  subtitle,
+  actionText,
+  onAction,
+}: Props): JSX.Element => {
   return (
     <header>
-      <div className="max-w-screen-xl pb-8">
+      <div className="max-w-screen-xl sm:flex sm:items-center sm:justify-between pb-8">
         <div className="sm:justify-between sm:items-center sm:flex">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
@@ -15,6 +27,9 @@ const Header = ({ title, subtitle }: Props): JSX.Element => {
             <p className="mt-1.5 text-sm text-gray-500">{subtitle}</p>
           </div>
         </div>
+        {actionText && onAction && (
+          <Button text={actionText} onClick={onAction} />
+        )}
       </div>
     </header>
   );

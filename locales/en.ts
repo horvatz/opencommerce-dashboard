@@ -7,9 +7,11 @@ const en = {
   taxRates: 'Tax Rates',
   catalog: 'Catalog',
   logout: 'Logout',
-  // Add product
+  // Product
   newProduct: 'New Product',
+  removeProduct: 'Remove Product',
   newProductDescription: 'Add a new product to the store 🎉',
+  updateProduct: 'Update product',
   name: 'Name',
   description: 'Description',
   basicDetails: 'Basic details',
@@ -35,6 +37,21 @@ const en = {
   productVariantCreated: 'Product variant successfully created',
   productVariantUpdated: 'Product variant successfully updated',
   productVariantRemoved: 'Product variant successfully removed',
+  // Product categories
+  productCategories: 'Product categories',
+  creatingCategory: 'Creating new category',
+  creatingCategoryDescription:
+    'Category can be used to group products for your clients. One product can have multiple categories.',
+  newCategory: 'New Category',
+  productCategoryCreated: 'Product category successfully created',
+  productCategoryUpdated: 'Product category successfully updated',
+  productCategoryRemoved: 'Product category successfully removed',
+  createCategory: 'Create category',
+  updateCategory: 'Update category',
+  removeCategory: 'Remove category',
+  numberOfProducts: 'Number of products',
+  productCategoriesDescription:
+    'Categories can be assigned to products. One product can have many different categories.',
   // Edit product
   productUpdated: 'Product successfully updated',
   // Product types

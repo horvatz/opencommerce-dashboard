@@ -13,6 +13,7 @@ import {
   ProductType,
   useProductCategoriesQuery,
 } from '../../../generated/graphql';
+import { FormMode } from './interfaces';
 
 export interface ProductBasicInfoFormProps {
   name: string;
@@ -24,6 +25,7 @@ export interface ProductBasicInfoFormProps {
 type Props = {
   onSuccess: (values: ProductBasicInfoFormProps) => void;
   values?: ProductBasicInfoFormProps;
+  mode?: FormMode;
   loading?: boolean;
 };
 
@@ -52,6 +54,7 @@ const ProductBasicInfoForm = ({
   onSuccess,
   values,
   loading = false,
+  mode = 'create',
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const [selectedCategories, setSelectedCategories] = useState<SelectItem[]>(
@@ -138,7 +141,11 @@ const ProductBasicInfoForm = ({
               }
               options={selectableCategoryOptions}
             />
-            <Button type="submit" loading={loading} text={t('createProduct')} />
+            <Button
+              type="submit"
+              loading={loading}
+              text={t(mode === 'create' ? 'createProduct' : 'updateProduct')}
+            />
           </form>
         )}
       </Formik>

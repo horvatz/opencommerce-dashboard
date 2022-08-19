@@ -1,0 +1,5 @@
+query Checkouts($filter: CheckoutFilterInput!) {
+  checkouts(filter: $filter) {
+    ...CheckoutDetails
+  }
+}

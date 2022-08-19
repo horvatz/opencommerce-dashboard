@@ -1,0 +1,14 @@
+fragment AddressDetails on Address {
+  firstName
+  lastName
+  companyName
+  streetAddress
+  zipCode
+  city
+  country {
+    ...CountryDetails
+  }
+  phone
+  companyName
+  vatNumber
+}

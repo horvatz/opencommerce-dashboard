@@ -1,0 +1,7 @@
+fragment CheckoutItemDetails on CheckoutItem {
+  id
+  quantity
+  variant {
+    ...ProductVariantDetails
+  }
+}

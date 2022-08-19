@@ -6,5 +6,8 @@ fragment ProductCategoryDetails on ProductCategory {
     id
     name
     description
+    media {
+      ...ProductMediaDetails
+    }
   }
 }

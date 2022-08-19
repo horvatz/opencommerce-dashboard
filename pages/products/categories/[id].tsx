@@ -7,6 +7,7 @@ import Button, { ButtonColor } from '../../../components/buttons/Button';
 import Card from '../../../components/cards/Card';
 import Header from '../../../components/layout/Header';
 import ProductCategoryForm from '../../../components/products/forms/ProductCategoryForm';
+import ProductItem from '../../../components/products/ProductItem';
 import {
   UpdateProductCategoryInput,
   useProductCategoryByIdLazyQuery,
@@ -72,7 +73,10 @@ const ProductCategoryDetails: NextPage = () => {
     <>
       <Header title={category.name} subtitle={category.description ?? ''} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <Card>
+        <Card margin="m-0">
+          <h2 className="text-xl font-medium text-gray-900 pb-6">
+            {t('basicDetails')}
+          </h2>
           <ProductCategoryForm
             loading={updateCategoryDataLoading}
             mode="edit"
@@ -95,6 +99,24 @@ const ProductCategoryDetails: NextPage = () => {
               onClick={() => handleRemoveCategory(parseInt(category.id))}
             />
           </div>
+        </Card>
+        <Card margin="0">
+          <h2 className="text-xl font-medium text-gray-900">
+            {t('productsInCategory', {
+              category: category.name.toLowerCase(),
+              count: category.products?.length,
+            })}
+          </h2>
+          <p className="text-gray-500 mt-2 text-sm sm:block">
+            {t('productsInCategoryDescription')}
+          </p>
+          {category.products?.map((product) => (
+            <ProductItem
+              onRemove={() => null}
+              key={product.id}
+              product={product}
+            />
+          ))}
         </Card>
       </div>
     </>

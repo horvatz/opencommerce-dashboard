@@ -58,7 +58,10 @@ const ProductBasicInfoForm = ({
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const [selectedCategories, setSelectedCategories] = useState<SelectItem[]>(
-    []
+    values?.categories?.map((category) => ({
+      value: category.id.toString(),
+      label: category.name,
+    })) ?? []
   );
 
   const {
@@ -95,6 +98,8 @@ const ProductBasicInfoForm = ({
             id: Number(category.value),
             name: category.label,
           }));
+
+          console.log(categories);
 
           onSuccess({
             name: other.name,
@@ -136,6 +141,7 @@ const ProductBasicInfoForm = ({
             <MultiSelectField
               name="categories"
               placeholder={t('categories')}
+              value={selectedCategories}
               onChange={(categories) =>
                 setSelectedCategories(categories as SelectItem[])
               }

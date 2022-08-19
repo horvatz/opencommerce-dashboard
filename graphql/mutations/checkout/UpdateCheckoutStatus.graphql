@@ -1,0 +1,5 @@
+mutation UpdateCheckoutStatus($id: String!, $status: CheckoutStatus!) {
+  checkoutStatusUpdate(id: $id, status: $status) {
+    ...CheckoutDetails
+  }
+}

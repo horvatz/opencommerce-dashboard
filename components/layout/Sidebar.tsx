@@ -92,7 +92,7 @@ const Sidebar = (): JSX.Element => {
             </a>
           </Link>
 
-          <Link href="/orders" passHref>
+          <Link href="/tax-rates" passHref>
             <a className="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
               <FiDollarSign opacity={75} className="h-5 w-5" />
               <span className="ml-3 text-sm font-medium">{t('taxRates')}</span>
@@ -106,12 +106,6 @@ const Sidebar = (): JSX.Element => {
           href=""
           className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0"
         >
-          <img
-            className="object-cover w-10 h-10 rounded-full"
-            src="https://www.hyperui.dev/photos/man-4.jpeg"
-            alt="Simon Lewis"
-          />
-
           <div className="ml-1.5">
             <p className="text-xs">
               <strong className="block font-medium">Simon Lewis</strong>

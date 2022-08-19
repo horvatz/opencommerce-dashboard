@@ -1,0 +1,5 @@
+query CheckoutById($id: String!) {
+  completedCheckout(id: $id) {
+    ...CheckoutDetails
+  }
+}

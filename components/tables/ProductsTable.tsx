@@ -48,6 +48,7 @@ const ProductsTable = ({ products }: Props) => {
       cellRenderer: (props: IDetailCellRendererParams) =>
         props.value ? (
           <Image
+            // TODO
             src={`http://localhost:3000${props.value.path}`}
             layout="fill"
             objectFit="contain"

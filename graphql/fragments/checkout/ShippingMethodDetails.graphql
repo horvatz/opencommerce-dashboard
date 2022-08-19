@@ -1,0 +1,9 @@
+fragment ShippingMethodDetails on ShippingMethod {
+  id
+  name
+  description
+  minDeliveryDays
+  maxDeliveryDays
+  price
+  active
+}

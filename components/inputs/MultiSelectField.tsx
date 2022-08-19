@@ -15,6 +15,7 @@ type MultiSelectProps = {
   name: string;
   placeholder: string;
   options: SelectItem[];
+  value?: SelectItem[];
   onChange: (
     newValue: MultiValue<SelectItem>,
     actionMeta: ActionMeta<SelectItem>
@@ -29,8 +30,8 @@ type MultiSelectProps = {
 const MultiSelectField = ({
   name,
   placeholder,
-
   options,
+  value = [],
   onChange,
 }: MultiSelectProps): JSX.Element => {
   return (
@@ -41,6 +42,7 @@ const MultiSelectField = ({
         styles={multiSelectStyles}
         options={options}
         isMulti={true}
+        value={value}
         onChange={onChange}
       />
     </div>

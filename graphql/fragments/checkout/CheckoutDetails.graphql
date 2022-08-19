@@ -1,0 +1,21 @@
+fragment CheckoutDetails on Checkout {
+  id
+  email
+  phone
+  status
+  items {
+    ...CheckoutItemDetails
+  }
+  shippingAddress {
+    ...AddressDetails
+  }
+  billingAddress {
+    ...AddressDetails
+  }
+  paymentMethod
+  shippingMethod {
+    ...ShippingMethodDetails
+  }
+  createdAt
+  updatedAt
+}

@@ -1,0 +1,5 @@
+mutation UpdateTaxRate($id: Int!, $taxRate: UpdateTaxRateInput!) {
+  updateTaxRate(id: $id, taxRate: $taxRate) {
+    ...TaxRateDetails
+  }
+}

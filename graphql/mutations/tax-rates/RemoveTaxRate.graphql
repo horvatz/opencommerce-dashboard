@@ -1,0 +1,5 @@
+mutation RemoveTaxRate($id: Int!) {
+  removeTaxRate(id: $id) {
+    ...TaxRateDetails
+  }
+}

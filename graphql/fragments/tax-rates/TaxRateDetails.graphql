@@ -1,0 +1,6 @@
+fragment TaxRateDetails on TaxRate {
+  id
+  name
+  description
+  rate
+}

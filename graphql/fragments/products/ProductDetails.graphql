@@ -3,6 +3,7 @@ fragment ProductDetails on Product {
   name
   description
   type
+  active
   categories {
     ...ProductCategoryDetails
   }

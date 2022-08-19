@@ -70,6 +70,8 @@ const en = {
   changeOrderStatusDescription: 'Here you can change status of this order.',
   shippingAddress: 'Shipping address',
   billingAddress: 'Billing address',
+  shipping: 'Shipping',
+  subtotal: 'Subtotal',
   totalPrice: 'Total (EUR)',
   paymentDetails: 'Payment details',
   // Order status
@@ -82,8 +84,15 @@ const en = {
   orderStatusClosed: 'Closed',
   orderStatusOpen: 'Open',
   // Tax rates
+  taxRate: 'Tax rate',
   taxRatesDescription:
     'Tax rates are used to calculate tax for orders and products.',
+  taxRateRemoved: 'Tax rate successfully removed',
+  taxRateUpdated: 'Tax rate successfully updated',
+  addTaxRate: 'Add tax rate',
+  updateTaxRate: 'Update tax rate',
+  rate: 'Rate',
+  ratePercent: 'Rate %',
   // Dropzone
   dropImage: 'Drop an image here or click to select a file to upload',
   // Actions

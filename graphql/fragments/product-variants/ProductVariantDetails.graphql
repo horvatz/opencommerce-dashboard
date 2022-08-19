@@ -7,4 +7,5 @@ fragment ProductVariantDetails on ProductVariant {
   available
   price
   salePrice
+  active
 }

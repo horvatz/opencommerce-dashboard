@@ -15,6 +15,7 @@ import {
   useCheckoutByIdLazyQuery,
   useUpdateCheckoutStatusMutation,
 } from '../../generated/graphql';
+import { formatPrice } from '../../utils/helpers';
 
 const OrderDetails: NextPage = () => {
   const { t } = useTranslation();
@@ -59,6 +60,12 @@ const OrderDetails: NextPage = () => {
       toast.success(t('orderStatusUpdated'));
     } catch (error) {}
   };
+
+  const subtotalPrice =
+    checkout.items?.reduce((a, b) => a + b.quantity * b.variant.price, 0) ?? 0;
+
+  const totalPrice: number =
+    Number(checkout.shippingMethod?.price) + Number(subtotalPrice);
 
   return (
     <>
@@ -112,16 +119,16 @@ const OrderDetails: NextPage = () => {
               </div>
               <div className="flex flex-col gap-3 pt-6">
                 <div className="inline-flex justify-between">
-                  <p>Subtotal</p>
-                  <span>12.90</span>
+                  <p>{t('subtotal')}</p>
+                  <span>{formatPrice(subtotalPrice)}</span>
                 </div>
                 <div className="inline-flex justify-between">
-                  <p>Subtotal</p>
-                  <span>12.90</span>
+                  <p>{t('shipping')}</p>
+                  <span>{formatPrice(checkout.shippingMethod?.price)}</span>
                 </div>
-                <div className="inline-flex justify-between">
-                  <p>Subtotal</p>
-                  <span>12.90</span>
+                <div className="inline-flex font-bold justify-between">
+                  <p>{t('totalPrice')}</p>
+                  <span>{formatPrice(totalPrice)}</span>
                 </div>
               </div>
             </Card>

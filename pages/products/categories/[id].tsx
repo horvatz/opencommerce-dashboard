@@ -33,7 +33,7 @@ const ProductCategoryDetails: NextPage = () => {
     useUpdateProductCategoryMutation();
   // Remove the product category with the given id from the server.
   const [removeProductCategory, { loading: removeCategoryLoading }] =
-    useRemoveProductCategoryMutation();
+    useRemoveProductCategoryMutation({ refetchQueries: ['ProductCategories'] });
 
   const handleCategoryUpdate = async (
     categoryId: number,

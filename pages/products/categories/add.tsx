@@ -16,8 +16,9 @@ const ProductCategoryAdd: NextPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [createProductCategory, { loading }] =
-    useCreateProductCategoryMutation();
+  const [createProductCategory, { loading }] = useCreateProductCategoryMutation(
+    { refetchQueries: ['ProductCategories'] }
+  );
 
   const createProductCategoryHandler = async (
     data: CreateProductCategoryInput

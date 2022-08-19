@@ -7,7 +7,9 @@ import EditTaxRateDialog from '../../components/dialogs/EditTaxRateDialog';
 import Header from '../../components/layout/Header';
 import TaxesTable from '../../components/tables/TaxesTable';
 import {
+  CreateTaxRateInput,
   UpdateTaxRateInput,
+  useCreateTaxRateMutation,
   useRemoveTaxRateMutation,
   useTaxRatesQuery,
   useUpdateTaxRateMutation,
@@ -38,6 +40,10 @@ const TaxRatesIndex: NextPage = () => {
     refetchQueries: ['TaxRates'],
   });
 
+  const [createTaxRate] = useCreateTaxRateMutation({
+    refetchQueries: ['TaxRates'],
+  });
+
   const handleTaxRateRemove = async (id: number) => {
     try {
       await removeTaxRate({ variables: { id } });
@@ -49,6 +55,14 @@ const TaxRatesIndex: NextPage = () => {
     try {
       await updateTaxRate({ variables: { id, taxRate: values } });
       toast.success(t('taxRateUpdated'));
+      setEditDialogOpen({ open: false, taxRateId: null });
+    } catch (error) {}
+  };
+
+  const handleTaxRateCreate = async (values: CreateTaxRateInput) => {
+    try {
+      await createTaxRate({ variables: { taxRate: values } });
+      toast.success(t('taxRateCreated'));
       setEditDialogOpen({ open: false, taxRateId: null });
     } catch (error) {}
   };
@@ -65,7 +79,12 @@ const TaxRatesIndex: NextPage = () => {
 
   return (
     <>
-      <Header title={t('taxRates')} subtitle={t('taxRatesDescription')} />
+      <Header
+        actionText={t('createTaxRate')}
+        onAction={() => setEditDialogOpen({ open: true, taxRateId: null })}
+        title={t('taxRates')}
+        subtitle={t('taxRatesDescription')}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-1 gap-6">
         <Card margin="m-0" padding="py-3">
           <TaxesTable
@@ -79,6 +98,7 @@ const TaxRatesIndex: NextPage = () => {
       </div>
       <EditTaxRateDialog
         open={editDialogOpen.open}
+        mode={editDialogOpen.taxRateId ? 'edit' : 'create'}
         initialValues={{
           name: currentTaxRate?.name ?? '',
           description: currentTaxRate?.description ?? '',
@@ -87,7 +107,7 @@ const TaxRatesIndex: NextPage = () => {
         onSuccess={(values) =>
           editDialogOpen.taxRateId
             ? handleTaxRateEdit(editDialogOpen.taxRateId, values)
-            : null
+            : handleTaxRateCreate(values)
         }
         onClose={() => setEditDialogOpen({ open: false, taxRateId: null })}
       />

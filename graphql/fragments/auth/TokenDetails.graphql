@@ -1,0 +1,3 @@
+fragment TokenDetails on Token {
+  accessToken
+}

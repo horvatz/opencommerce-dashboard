@@ -104,6 +104,10 @@ const en = {
   cancel: 'Cancel',
   nextStep: 'Continue to the next step',
   backHome: 'Back home',
+  // Login
+  email: 'Email',
+  password: 'Password',
+  login: 'Login',
   // Stepper
   steps: 'Steps',
   // Form validation

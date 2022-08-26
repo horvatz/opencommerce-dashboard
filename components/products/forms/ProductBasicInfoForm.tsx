@@ -12,6 +12,7 @@ import { useState } from 'react';
 import {
   ProductType,
   useProductCategoriesQuery,
+  useTaxRatesQuery,
 } from '../../../generated/graphql';
 import { FormMode } from './interfaces';
 
@@ -20,6 +21,7 @@ export interface ProductBasicInfoFormProps {
   description: string;
   type: ProductType;
   categories: { id: number; name: string }[];
+  taxRate: string;
 }
 
 type Props = {
@@ -40,6 +42,7 @@ const formProductBasicInfoValidationSchema = yup.object().shape({
     .required(i18n.t('fieldRequired', { field: i18n.t('name') })),
   description: yup.string().optional(),
   type: yup.mixed().oneOf(['REGULAR', 'DIGITAL']).required(),
+  taxRate: yup.string().required(),
   categories: yup
     .array()
     .of(
@@ -70,9 +73,11 @@ const ProductBasicInfoForm = ({
     error: categoriesDataError,
   } = useProductCategoriesQuery();
 
-  const initialValues = values
-    ? { name: values.name, description: values.description, type: values.type }
-    : { name: '', description: '', type: 'REGULAR' };
+  const {
+    data: taxRatesData,
+    loading: taxRatesDataLoading,
+    error: taxRatesDataError,
+  } = useTaxRatesQuery();
 
   const selectableCategoryOptions: SelectItem[] =
     categoriesData?.productCategories?.map((category) => ({
@@ -80,9 +85,36 @@ const ProductBasicInfoForm = ({
       label: category.name,
     })) ?? [];
 
-  if (categoriesDataLoading || categoriesDataError || !categoriesData) {
+  const selectableTaxRates: SelectItem[] =
+    taxRatesData?.taxRates.map((taxRate) => ({
+      value: taxRate.id,
+      label: `${taxRate.name} (${taxRate.rate}%)`,
+    })) ?? [];
+
+  if (
+    categoriesDataLoading ||
+    categoriesDataError ||
+    !categoriesData ||
+    !taxRatesData ||
+    taxRatesDataLoading ||
+    taxRatesDataError
+  ) {
     return <></>;
   }
+
+  const initialValues = values
+    ? {
+        name: values.name,
+        description: values.description,
+        type: values.type,
+        taxRate: values.taxRate,
+      }
+    : {
+        name: '',
+        description: '',
+        type: 'REGULAR',
+        taxRate: selectableTaxRates[1].value ?? '',
+      };
 
   return (
     <div>
@@ -99,11 +131,8 @@ const ProductBasicInfoForm = ({
             name: category.label,
           }));
 
-          console.log(categories);
-
           onSuccess({
-            name: other.name,
-            description: other.description,
+            ...other,
             type: productType,
             categories: categories,
           });
@@ -136,6 +165,15 @@ const ProductBasicInfoForm = ({
               value={values.type}
               error={Boolean(errors.type)}
               errorMessage={errors.type}
+              onChange={handleChange}
+            />
+            <SelectField
+              name="taxRate"
+              label={t('taxRate')}
+              options={selectableTaxRates}
+              value={values.taxRate}
+              error={Boolean(errors.taxRate)}
+              errorMessage={errors.taxRate}
               onChange={handleChange}
             />
             <MultiSelectField

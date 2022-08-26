@@ -15,7 +15,6 @@ const ProtectedRoute = ({ children }: Props) => {
     if (!isLoading && !isSignedIn) {
       router.push('/login');
     }
-    console.log('test');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isSignedIn]);
 

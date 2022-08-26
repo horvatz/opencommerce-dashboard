@@ -13,6 +13,7 @@ import {
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
+import { IMAGE_HOST } from '../../utils/constants';
 
 type Props = {
   products: ProductDetailsFragment[];
@@ -47,13 +48,17 @@ const ProductsTable = ({ products }: Props) => {
       width: 100,
       cellRenderer: (props: IDetailCellRendererParams) =>
         props.value ? (
-          <Image
-            // TODO
-            src={`http://localhost:3000${props.value.path}`}
-            layout="fill"
-            objectFit="contain"
-            alt="product image"
-          />
+          <div className="h-full flex flex-col items-center justify-center">
+            <div className="relative h-14 w-14 rounded-xl overflow-hidden">
+              <Image
+                // TODO
+                src={`${IMAGE_HOST}${props.value.path}`}
+                layout="fill"
+                objectFit="cover"
+                alt="product image"
+              />
+            </div>
+          </div>
         ) : (
           ''
         ),
@@ -78,7 +83,7 @@ const ProductsTable = ({ products }: Props) => {
 
   const gridOptions: GridOptions = useMemo(
     () => ({
-      rowHeight: 60,
+      rowHeight: 70,
     }),
     []
   );

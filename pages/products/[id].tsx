@@ -12,13 +12,16 @@ import {
   ProductVariantDetailsFragment,
   UpdateProductInput,
   useProductByIdLazyQuery,
+  useRemoveProductMediaMutation,
   useRemoveProductMutation,
   useRemoveProductVariantMutation,
   useUpdateProductMutation,
+  useUploadProductMediaMutation,
 } from '../../generated/graphql';
 import { FiLoader, FiPlusCircle } from 'react-icons/fi';
 import EditVariantDialog from '../../components/dialogs/EditVariantDialog';
 import Button, { ButtonColor } from '../../components/buttons/Button';
+import MediaGallery from '../../components/products/MediaGallery';
 
 const ProductDetails: NextPage = () => {
   const { t } = useTranslation();
@@ -37,7 +40,7 @@ const ProductDetails: NextPage = () => {
   const [
     getProductById,
     { refetch: refetchProductById, loading, error, data: productData },
-  ] = useProductByIdLazyQuery();
+  ] = useProductByIdLazyQuery({ variables: { id: router.query.id as string } });
   // Product update mutation
   const [updateProductData, { loading: updateLoading }] =
     useUpdateProductMutation();
@@ -46,6 +49,14 @@ const ProductDetails: NextPage = () => {
   // Remove product variant
   const [removeProductVariantData, { loading: removeVariantLoading }] =
     useRemoveProductVariantMutation();
+
+  // Upload product media
+  const [uploadMedia, { loading: uploadMediaLoading }] =
+    useUploadProductMediaMutation();
+
+  // Remove product media
+  const [removeMedia, { loading: removeMediaLoading }] =
+    useRemoveProductMediaMutation();
 
   useEffect(() => {
     if (router.query.id) {
@@ -92,6 +103,24 @@ const ProductDetails: NextPage = () => {
     } catch (error) {}
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleMediaUpload = async (acceptedFiles: any) => {
+    try {
+      await uploadMedia({
+        variables: { productId: product.id, file: acceptedFiles[0] },
+      });
+    } catch (error) {}
+  };
+
+  const handleRemoveMedia = async (mediaId: string) => {
+    try {
+      await removeMedia({
+        variables: { productId: product.id, mediaId: mediaId },
+      });
+      refetchProductById();
+    } catch (error) {}
+  };
+
   /**
    * TODO handle loading and error
    */
@@ -114,12 +143,18 @@ const ProductDetails: NextPage = () => {
               name: product.name,
               description: product.description ?? '',
               type: product.type,
+              taxRate: product.taxRate?.id ?? '',
               categories: product.categories.map((c) => ({
                 id: Number(c.id),
                 name: c.name,
               })),
             }}
-            onSuccess={(values) => updateProduct(product.id, values)}
+            onSuccess={(values) =>
+              updateProduct(product.id, {
+                ...values,
+                taxRate: { id: parseInt(values.taxRate) },
+              })
+            }
           />
           <div className="flex flex-col pt-3">
             <Button
@@ -129,7 +164,7 @@ const ProductDetails: NextPage = () => {
             />
           </div>
         </Card>
-        <div>
+        <div className="flex flex-col gap-6">
           <Card margin="0">
             <div className="inline-flex justify-between items-center w-full pb-6">
               <h2 className="text-xl font-medium text-gray-900">
@@ -163,8 +198,20 @@ const ProductDetails: NextPage = () => {
               )}
             </div>
           </Card>
+          <Card margin="0">
+            <div className="inline-flex justify-between items-center w-full pb-6">
+              <h2 className="text-xl font-medium text-gray-900">
+                {t('productImages')}{' '}
+                {product.media && product.media.length > 0
+                  ? `(${product.media.length})`
+                  : ''}
+              </h2>
+            </div>
+            <ImageDropzone onDrop={handleMediaUpload} />
+            {/*<input type="file" onChange={handleMediaUpload} />*/}
+            <MediaGallery onRemove={handleRemoveMedia} media={product.media} />
+          </Card>
         </div>
-        <ImageDropzone product={product} />
       </div>
       <EditVariantDialog
         variant={variantDialog.variant}

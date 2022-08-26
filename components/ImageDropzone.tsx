@@ -1,10 +1,9 @@
-import {
-  ProductDetailsFragment,
-  useUploadProductMediaMutation,
-} from '../generated/graphql';
+import { useDropzone } from 'react-dropzone';
+import { useTranslation } from 'react-i18next';
+import { FiImage } from 'react-icons/fi';
 
 type Props = {
-  product: ProductDetailsFragment;
+  onDrop: (acceptedFiles: unknown) => void;
 };
 
 /**
@@ -12,26 +11,17 @@ type Props = {
  *
  * @returns {JSX.Element}
  */
-const ImageDropzone = ({ product }: Props): JSX.Element => {
-  /*const [uploadMedia] = useUploadProductMediaMutation({
-    onCompleted(data) {
-      console.log(data);
-    },
-  });
+const ImageDropzone = ({ onDrop }: Props): JSX.Element => {
+  const { t } = useTranslation();
 
-  const onFileDrop = (e) => {
-    const file = e.currentTarget.files[0];
-    if (!file) return;
-    /*uploadMedia({
-      variables: { productId: product.id, media: file },
-    });
-  }*/
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
   return (
     <section className="py-5">
-      {/*<div
+      <div
         {...getRootProps({
           className:
-            'bg-gray-50 p-5 text-center border-dashed border-2 border-blue-200',
+            'bg-gray-50 p-8 text-center border-dashed border-2 border-blue-200',
         })}
       >
         <input {...getInputProps()} />
@@ -40,8 +30,6 @@ const ImageDropzone = ({ product }: Props): JSX.Element => {
           <p className="text-gray-500 text-xs font-medium">{t('dropImage')}</p>
         </div>
       </div>
-    */}
-      {/*<input type="file" onChange={onFileDrop} />*/}
     </section>
   );
 };

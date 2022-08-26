@@ -1,26 +1,38 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import {
   FiBookOpen,
   FiDollarSign,
+  FiLogOut,
   FiPlusCircle,
   FiShoppingBag,
   FiShoppingCart,
   FiTag,
 } from 'react-icons/fi';
+import { useAuth } from '../../contexts/auth';
 
 const Sidebar = (): JSX.Element => {
   const { t } = useTranslation();
+  const { signOut } = useAuth();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    signOut();
+    router.push('/login');
+  };
 
   return (
     <div className="flex flex-col justify-between h-screen bg-white border-r w-64">
       <div className="px-4 py-6">
-        <span className="flex justify-center items-center gap-2 w-full h-10 text-center rounded-lg">
-          <FiShoppingCart />
-          <span className="text-base font-medium text-gray-900">
-            {t('appName')}
-          </span>
-        </span>
+        <Link href="/" passHref>
+          <a className="flex justify-center items-center gap-2 w-full h-10 text-center rounded-lg">
+            <FiShoppingCart />
+            <span className="text-base font-medium text-gray-900">
+              {t('appName')}
+            </span>
+          </a>
+        </Link>
         <nav className="flex flex-col mt-6 space-y-1">
           <details className="group">
             <summary className="flex items-center px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
@@ -102,18 +114,17 @@ const Sidebar = (): JSX.Element => {
       </div>
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
-        <a
-          href=""
-          className="flex items-center p-4 bg-white hover:bg-gray-50 shrink-0"
+        <span
+          onClick={handleSignOut}
+          className="flex cursor-pointer items-center p-4 bg-white hover:bg-gray-50 shrink-0"
         >
-          <div className="ml-1.5">
+          <div className="ml-1.5 flex w-full justify-between">
             <p className="text-xs">
-              <strong className="block font-medium">Simon Lewis</strong>
-
-              <span> simonlewis@fakemail.com </span>
+              <strong className="block font-medium">Sign out</strong>
             </p>
+            <FiLogOut />
           </div>
-        </a>
+        </span>
       </div>
     </div>
   );

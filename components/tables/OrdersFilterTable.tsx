@@ -31,7 +31,7 @@ const OrdersFilterTable = ({ orders }: Props): JSX.Element => {
     {
       field: 'id',
       headerName: t('id'),
-      width: 300,
+      flex: 1,
     },
     {
       field: 'customer',
@@ -43,7 +43,6 @@ const OrdersFilterTable = ({ orders }: Props): JSX.Element => {
       headerName: t('orderStatus'),
       cellRenderer: (props: IDetailCellRendererParams) => {
         const status = props.value;
-        console.log(status);
         return (
           <Badge
             text={status}

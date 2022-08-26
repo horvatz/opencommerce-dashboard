@@ -1,0 +1,5 @@
+mutation RemoveProductMedia($productId: String!, $mediaId: String!) {
+  productMediaRemove(productId: $productId, mediaId: $mediaId) {
+    ...ProductDetails
+  }
+}

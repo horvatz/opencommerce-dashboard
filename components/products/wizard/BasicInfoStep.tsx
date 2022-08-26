@@ -47,7 +47,9 @@ const BasicInfoStep = (): JSX.Element => {
       <Card>
         <ProductBasicInfoForm
           loading={createProductLoading}
-          onSuccess={(values) => submit(values)}
+          onSuccess={(values) =>
+            submit({ ...values, taxRate: { id: parseInt(values.taxRate) } })
+          }
         />
       </Card>
       <TextCard

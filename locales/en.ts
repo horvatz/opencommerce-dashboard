@@ -6,7 +6,7 @@ const en = {
   orders: 'Orders',
   taxRates: 'Tax Rates',
   catalog: 'Catalog',
-  logout: 'Logout',
+  logout: 'Sign out',
   // Product
   product: 'Product',
   quantity: 'Quantity',
@@ -96,6 +96,7 @@ const en = {
   rate: 'Rate',
   ratePercent: 'Rate %',
   // Dropzone
+  productImages: 'Product images',
   dropImage: 'Drop an image here or click to select a file to upload',
   // Actions
   save: 'Save',
@@ -107,7 +108,7 @@ const en = {
   // Login
   email: 'Email',
   password: 'Password',
-  login: 'Login',
+  login: 'Sign in',
   // Stepper
   steps: 'Steps',
   // Form validation

@@ -3,11 +3,7 @@ mutation UploadProductMedia(
   $metadata: String
   $file: Upload!
 ) {
-  productMediaUpload(
-    productId: "cl6xqyfud0008j3gnyesk05tx"
-    metadata: $metadata
-    file: $file
-  ) {
+  productMediaUpload(productId: $productId, metadata: $metadata, file: $file) {
     ...ProductDetails
   }
 }

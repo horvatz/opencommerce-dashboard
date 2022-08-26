@@ -73,6 +73,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     // Error handling
     const errorLink = onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
+        for (const err of graphQLErrors) {
+          if (err.extensions.code === 'UNAUTHENTICATED') {
+            signOut();
+          }
+        }
         // handle graphql errors
         toast.error(
           `${i18n.t('errorGraphql', { message: graphQLErrors[0].message })}`

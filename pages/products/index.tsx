@@ -4,14 +4,23 @@ import Header from '../../components/layout/Header';
 import { useProductsQuery } from '../../generated/graphql';
 import ProductsTable from '../../components/tables/ProductsTable';
 import { useRouter } from 'next/router';
+import Loading from '../../components/Loading';
 
 const ProductIndex: NextPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { data: productsData, error } = useProductsQuery();
+  const {
+    data: productsData,
+    error: productsError,
+    loading: productsDataLoading,
+  } = useProductsQuery();
 
-  if (!productsData || error) {
+  if (productsDataLoading) {
+    <Loading />;
+  }
+
+  if (!productsData || productsError) {
     return <></>;
   }
 

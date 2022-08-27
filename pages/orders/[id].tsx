@@ -9,6 +9,7 @@ import AddressCard from '../../components/cards/AddressCard';
 import Card from '../../components/cards/Card';
 import ConfirmDialog from '../../components/dialogs/ConfirmDialog';
 import EditCheckoutStatusDialog from '../../components/dialogs/EditCheckoutStatusDialog';
+import Loading from '../../components/Loading';
 import OrderTable from '../../components/tables/OrderTable';
 import {
   CheckoutStatus,
@@ -37,8 +38,12 @@ const OrderDetails: NextPage = () => {
     }
   }, [getCheckoutById, router.query.id]);
 
-  if (loading || updateLoading || error || !data) {
-    return <div>Loading...</div>;
+  if (loading || updateLoading) {
+    return <Loading />;
+  }
+
+  if (error || !data) {
+    return <></>;
   }
 
   const checkout = data.completedCheckout;

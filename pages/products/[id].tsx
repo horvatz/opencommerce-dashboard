@@ -22,6 +22,7 @@ import { FiLoader, FiPlusCircle } from 'react-icons/fi';
 import EditVariantDialog from '../../components/dialogs/EditVariantDialog';
 import Button, { ButtonColor } from '../../components/buttons/Button';
 import MediaGallery from '../../components/products/MediaGallery';
+import Loading from '../../components/Loading';
 
 const ProductDetails: NextPage = () => {
   const { t } = useTranslation();
@@ -39,7 +40,12 @@ const ProductDetails: NextPage = () => {
   // Fetch product
   const [
     getProductById,
-    { refetch: refetchProductById, loading, error, data: productData },
+    {
+      refetch: refetchProductById,
+      loading: productLoading,
+      error,
+      data: productData,
+    },
   ] = useProductByIdLazyQuery({ variables: { id: router.query.id as string } });
   // Product update mutation
   const [updateProductData, { loading: updateLoading }] =
@@ -51,12 +57,10 @@ const ProductDetails: NextPage = () => {
     useRemoveProductVariantMutation();
 
   // Upload product media
-  const [uploadMedia, { loading: uploadMediaLoading }] =
-    useUploadProductMediaMutation();
+  const [uploadMedia] = useUploadProductMediaMutation();
 
   // Remove product media
-  const [removeMedia, { loading: removeMediaLoading }] =
-    useRemoveProductMediaMutation();
+  const [removeMedia] = useRemoveProductMediaMutation();
 
   useEffect(() => {
     if (router.query.id) {
@@ -64,8 +68,8 @@ const ProductDetails: NextPage = () => {
     }
   }, [getProductById, router.query.id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (productLoading) {
+    return <Loading />;
   }
 
   if (error || !productData) {

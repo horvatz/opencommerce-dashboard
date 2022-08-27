@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Button, { ButtonColor } from '../../../components/buttons/Button';
 import Card from '../../../components/cards/Card';
 import Header from '../../../components/layout/Header';
+import Loading from '../../../components/Loading';
 import ProductCategoryForm from '../../../components/products/forms/ProductCategoryForm';
 import ProductItem from '../../../components/products/ProductItem';
 import {
@@ -63,7 +64,11 @@ const ProductCategoryDetails: NextPage = () => {
     }
   }, [getProductCategoryById, router.query.id]);
 
-  if (!categoryData || categoryDataLoading || categoryDataError) {
+  if (categoryDataLoading) {
+    return <Loading />;
+  }
+
+  if (!categoryData || categoryDataError) {
     return <></>;
   }
 

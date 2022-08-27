@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import Header from '../../../components/layout/Header';
+import Loading from '../../../components/Loading';
 import ProductCategoryTable from '../../../components/tables/ProductCategoryTable';
 import { useProductCategoriesQuery } from '../../../generated/graphql';
 
@@ -11,7 +12,11 @@ const ProductCategoriesIndex: NextPage = () => {
 
   const { data: categories, loading, error } = useProductCategoriesQuery();
 
-  if (!categories || loading || error) {
+  if (loading) {
+    <Loading />;
+  }
+
+  if (!categories || error) {
     return <></>;
   }
 

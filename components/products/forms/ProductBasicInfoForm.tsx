@@ -15,6 +15,7 @@ import {
   useTaxRatesQuery,
 } from '../../../generated/graphql';
 import { FormMode } from './interfaces';
+import Loading from '../../Loading';
 
 export interface ProductBasicInfoFormProps {
   name: string;
@@ -91,12 +92,14 @@ const ProductBasicInfoForm = ({
       label: `${taxRate.name} (${taxRate.rate}%)`,
     })) ?? [];
 
+  if (categoriesDataLoading || taxRatesDataLoading) {
+    return <Loading />;
+  }
+
   if (
-    categoriesDataLoading ||
     categoriesDataError ||
     !categoriesData ||
     !taxRatesData ||
-    taxRatesDataLoading ||
     taxRatesDataError
   ) {
     return <></>;

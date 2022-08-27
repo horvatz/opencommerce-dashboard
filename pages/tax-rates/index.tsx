@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Card from '../../components/cards/Card';
 import EditTaxRateDialog from '../../components/dialogs/EditTaxRateDialog';
 import Header from '../../components/layout/Header';
+import Loading from '../../components/Loading';
 import TaxesTable from '../../components/tables/TaxesTable';
 import {
   CreateTaxRateInput,
@@ -67,7 +68,11 @@ const TaxRatesIndex: NextPage = () => {
     } catch (error) {}
   };
 
-  if (!ratesData || ratesLoading || ratesError) {
+  if (ratesLoading) {
+    return <Loading />;
+  }
+
+  if (!ratesData || ratesError) {
     return <></>;
   }
 

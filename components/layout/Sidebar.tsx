@@ -9,6 +9,7 @@ import {
   FiShoppingBag,
   FiShoppingCart,
   FiTag,
+  FiUsers,
 } from 'react-icons/fi';
 import { useAuth } from '../../contexts/auth';
 
@@ -108,6 +109,12 @@ const Sidebar = (): JSX.Element => {
             <a className="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
               <FiDollarSign opacity={75} className="h-5 w-5" />
               <span className="ml-3 text-sm font-medium">{t('taxRates')}</span>
+            </a>
+          </Link>
+          <Link href="/users" passHref>
+            <a className="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
+              <FiUsers opacity={75} className="h-5 w-5" />
+              <span className="ml-3 text-sm font-medium">{t('users')}</span>
             </a>
           </Link>
         </nav>

@@ -67,11 +67,10 @@ const ProductsTable = ({ products }: Props) => {
       field: 'name',
       headerName: t('name'),
       filter: 'true',
-      flex: 2,
     },
-    { field: 'description', headerName: t('description'), flex: 2 },
-    { field: 'type', headerName: t('productType'), flex: 1 },
-    { field: 'numOfVariants', headerName: t('variants'), width: 100 },
+    { field: 'description', headerName: t('description'), width: 500 },
+    { field: 'type', headerName: t('productType') },
+    { field: 'numOfVariants', headerName: t('variants'), flex: 1 },
   ]);
 
   const defaultColDef = useMemo(

@@ -25,10 +25,6 @@ const StatisticCard = ({
           <p className="text-2xl font-medium text-gray-900">{value}</p>
         </div>
       </div>
-
-      <div className="inline-flex gap-2 p-1 text-green-600 bg-green-100 rounded">
-        <span className="text-xs font-medium"> 67.81% </span>
-      </div>
     </article>
   );
 };

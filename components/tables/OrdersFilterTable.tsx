@@ -57,7 +57,6 @@ const OrdersFilterTable = ({ orders }: Props): JSX.Element => {
         );
       },
     },
-    { field: 'totalPrice', headerName: t('totalPrice') },
   ]);
 
   const rowData = orders.map((order) => ({

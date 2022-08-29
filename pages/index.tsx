@@ -29,29 +29,29 @@ const Home: NextPage = () => {
     <>
       <Header title={t('welcomeBack')} />
       <div className="flex gap-6 flex-wrap">
-        <div className="basis-1/3">
+        <div className="w-full md:basis-1/3">
           <StatisticCard
             title={t('openOrders')}
             value={statistics.openOrders}
           />
         </div>
-        <div className="basis-1/3">
+        <div className="w-full md:basis-1/3">
           <StatisticCard
             title={t('closedOrders')}
             value={statistics.closedOrders}
           />
         </div>
-        <div className="basis-1/3">
+        <div className="w-full md:basis-1/3">
           <StatisticCard title={t('allOrders')} value={statistics.allOrders} />
         </div>
-        <div className="basis-1/3">
+        <div className="w-full md:basis-1/3">
           <StatisticCard
             icon={<FiShoppingBag />}
             title={t('products')}
             value={statistics.productsCount}
           />
         </div>
-        <div className="basis-1/3">
+        <div className="w-full md:basis-1/3">
           <StatisticCard
             icon={<FiUsers className="h-5 w-5" />}
             title={t('users')}

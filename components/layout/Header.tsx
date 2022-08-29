@@ -18,7 +18,7 @@ const Header = ({
 }: Props): JSX.Element => {
   return (
     <header>
-      <div className="max-w-screen-xl sm:flex sm:items-center sm:justify-between pb-8">
+      <div className="w-full gap-6 sm:gap-0 flex items-center justify-between flex-col sm:flex-row pb-8">
         <div className="sm:justify-between sm:items-center sm:flex">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">

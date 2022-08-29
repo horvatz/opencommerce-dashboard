@@ -13,7 +13,11 @@ import {
 } from 'react-icons/fi';
 import { useAuth } from '../../contexts/auth';
 
-const Sidebar = (): JSX.Element => {
+type Props = {
+  mobileOpen: boolean;
+};
+
+const Sidebar = ({ mobileOpen }: Props): JSX.Element => {
   const { t } = useTranslation();
   const { signOut } = useAuth();
   const router = useRouter();
@@ -24,7 +28,11 @@ const Sidebar = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col justify-between h-screen bg-white border-r w-64">
+    <div
+      className={`absolute ${
+        mobileOpen === false ? 'hidden' : ''
+      } z-50 sm:relative md:flex flex-col justify-between h-screen bg-white border-r w-64`}
+    >
       <div className="px-4 py-6">
         <Link href="/" passHref>
           <a className="flex justify-center items-center gap-2 w-full h-10 text-center rounded-lg">

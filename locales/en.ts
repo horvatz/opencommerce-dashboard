@@ -109,6 +109,11 @@ const en = {
   newUser: 'New User',
   creatingUser: 'Creating new user',
   creatingUserDescription: 'Create users that can access manage your store.',
+  // Statistics
+  welcomeBack: 'Welcome back!',
+  openOrders: 'Open orders',
+  closedOrders: 'Closed orders',
+  allOrders: 'All orders',
   // Dropzone
   productImages: 'Product images',
   dropImage: 'Drop an image here or click to select a file to upload',

@@ -1,0 +1,7 @@
+fragment StatisticsDetails on Statistics {
+  openOrders
+  closedOrders
+  allOrders
+  productsCount
+  usersCount
+}

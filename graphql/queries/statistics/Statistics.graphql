@@ -1,0 +1,5 @@
+query Statistics {
+  statistics {
+    ...StatisticsDetails
+  }
+}
